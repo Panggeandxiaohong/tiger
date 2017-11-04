@@ -13,6 +13,16 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+        </dependency>
+        <!--引入jsp相关结束-->
+        <!--引入Javaee7开始-->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>online.pangge.weixin</groupId>
             <artifactId>core</artifactId>
             <version>1.0.0</version>

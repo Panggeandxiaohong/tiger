@@ -332,6 +332,18 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <!--引入jsp相关结束-->
+            <!--引入Javaee7开始-->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>7.0</version>
+            </dependency>
             <!-- servlet-api-->
             <dependency>
                 <groupId>javax.servlet</groupId>
