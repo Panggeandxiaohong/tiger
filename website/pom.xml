@@ -13,7 +13,7 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>online.pangge.wechat</groupId>
+            <groupId>online.pangge.weixin</groupId>
             <artifactId>core</artifactId>
             <version>1.0.0</version>
         </dependency>
