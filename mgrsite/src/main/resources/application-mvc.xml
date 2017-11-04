@@ -55,5 +55,4 @@
     </bean>
     <aop:aspectj-autoproxy/>
     <import resource="classpath:application.xml"/>
-    <import resource="classpath:spring-jedis.xml"/>
 </beans>

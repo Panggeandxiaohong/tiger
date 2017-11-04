@@ -13,7 +13,6 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <import resource="classpath:application.xml"/>
-    <import resource="classpath:spring-jedis.xml"/>
     <!--mapper扫描器-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="online.pangge.*.mapper"/>
