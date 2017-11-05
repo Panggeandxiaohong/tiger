@@ -1,11 +1,14 @@
 package online.pangge.exam.job;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Pangge on 2017/11/5.
  */
+@Component
 public class TestJob implements Job<String> {
     @Override
     public List dataSource() {
