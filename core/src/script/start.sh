@@ -77,7 +77,7 @@ start() {
       echo "================================"
    else
       echo -n "Starting $APP_MAINCLASS $PARAM..."
-      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS $PARAM >/root/sh/log 2>&1 &"
+      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS $PARAM >/root/sh/$PARAM 2>&1 &"
       su - $RUNNING_USER -c "$JAVA_CMD"
 	echo $psid
       checkpid
