@@ -25,7 +25,7 @@ RUNNING_USER=root
 APP_HOME=/root/weixin/tiger/website/target/website/WEB-INF
 #需要启动的Java主程序（main方法类）
 APP_MAINCLASS=$2
- 
+PARAM=$3
 #拼凑完整的classpath参数，包括指定lib目录下所有的jar
 CLASSPATH=$APP_HOME/classes
 for i in "$APP_HOME"/lib/*.jar; do
@@ -76,8 +76,8 @@ start() {
       echo "warn: $APP_MAINCLASS already started! (pid=$psid)"
       echo "================================"
    else
-      echo -n "Starting $APP_MAINCLASS ..."
-      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS $3 >/root/sh/log 2>&1 &"
+      echo -n "Starting $APP_MAINCLASS $PARAM..."
+      JAVA_CMD="nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $APP_MAINCLASS $PARAM >/root/sh/log 2>&1 &"
       su - $RUNNING_USER -c "$JAVA_CMD"
 	echo $psid
       checkpid
