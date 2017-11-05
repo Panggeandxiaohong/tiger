@@ -13,8 +13,8 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <!--引入jsp相关结束-->
         <!--引入Javaee7开始-->
