@@ -12,15 +12,10 @@
     <name>website Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
+        <!-- jstl -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <!--引入jsp相关结束-->
-        <!--引入Javaee7开始-->
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
         </dependency>
         <dependency>
             <groupId>online.pangge.weixin</groupId>

@@ -344,11 +344,11 @@
             </dependency>
             <!--引入jsp相关结束-->
             <!--引入Javaee7开始-->
-            <dependency>
+<!--            <dependency>
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>7.0</version>
-            </dependency>
+            </dependency>-->
             <!-- servlet-api-->
             <dependency>
                 <groupId>javax.servlet</groupId>
