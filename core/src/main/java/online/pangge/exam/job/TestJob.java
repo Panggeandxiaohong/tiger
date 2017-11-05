@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Pangge on 2017/11/5.
  */
-@Component
+@Component("TestJob")
 public class TestJob implements Job<String> {
     @Override
     public List dataSource() {
