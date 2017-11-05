@@ -22,7 +22,7 @@ RUNNING_USER=root
  
 #Java程序所在的目录（classes的上一级目录）
 #APP_HOME=/root/weixin/pangge/target/wechat/WEB-INF
-APP_HOME=/root/weixin/pangge/target/wechat/WEB-INF
+APP_HOME=/root/weixin/tiger/website/target/website/WEB-INF
 #需要启动的Java主程序（main方法类）
 APP_MAINCLASS=$2
  
