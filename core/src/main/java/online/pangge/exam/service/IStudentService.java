@@ -21,4 +21,6 @@ public interface IStudentService {
     List<Student> selectByWechatName(String wechatname);
 
     List<Student> selectByStunum(Long stunum);
+
+    boolean checkIsBandStunum(String wechatName);
 }

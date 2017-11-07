@@ -18,6 +18,7 @@ import online.pangge.wechat.util.MessageUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -49,6 +50,7 @@ public class CoreService {
     @Autowired
     private IWrongSubjectService wrongSubjectService;
 
+    @Transactional
     public String processRequest(XmlMessageEntity entity) {
         // xml格式的消息数据
         String respXml = null;
@@ -71,22 +73,40 @@ public class CoreService {
             textMessage.setFromUserName(toUserName);
             textMessage.setCreateTime(System.currentTimeMillis());
             textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-            String key = null;
             String responseStr = null;
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                 String redisKey = (String) redisUtil.get(fromUserName +"key");
                 if (StringUtils.isEmpty(redisKey)) {
                     if (msg.contains("自测")) {
+                        if(!studentService.checkIsBandStunum(fromUserName)){
+                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
+                            // 将文本消息对象转换成xml
+                            respXml = MessageUtil.messageToXml(textMessage);
+                            return respXml;
+                        }
                         redisUtil.set(fromUserName +"key", "exam", 3600L);
                         responseStr = "开始自测。。。";
                     } else if (msg.contains("统计")) {
+                        if(!studentService.checkIsBandStunum(fromUserName)){
+                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
+                            // 将文本消息对象转换成xml
+                            respXml = MessageUtil.messageToXml(textMessage);
+                            return respXml;
+                        }
                         redisUtil.set(fromUserName +"key", "count", 3600L);
                         responseStr = "真正的开始统计。。。";
                     }else if(msg.contains("绑定")){
                         redisUtil.set(fromUserName +"key", "bind", 3600L);
                         responseStr = "开始绑定，请输入学号#密码进行绑定，比如：000#000";
                     } else if (msg.contains("练习")) {
+                        if(!studentService.checkIsBandStunum(fromUserName)){
+                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
+                            // 将文本消息对象转换成xml
+                            respXml = MessageUtil.messageToXml(textMessage);
+                            return respXml;
+                        }
+                        wrongSubjectService.deleteByPrimaryKey(Long.valueOf(studentService.selectByWechatName(fromUserName).get(0).getStunum()),null);
                         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
                         redisUtil.set(fromUserName +"key", "exercise", 3600L);
                         List<Subject> allSubject = subjectService.selectAll();
@@ -106,6 +126,12 @@ public class CoreService {
                         redisUtil.remove(fromUserName + "subjectNumber");
                         responseStr = "退出成功。。。";
                     } else if ("count".equals(redisKey)) {
+                        if(!studentService.checkIsBandStunum(fromUserName)){
+                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
+                            // 将文本消息对象转换成xml
+                            respXml = MessageUtil.messageToXml(textMessage);
+                            return respXml;
+                        }
                         responseStr = "统计中。。。";
                     }else if ("bind".equals(redisKey)) {
                         String[] userNameAndPassword = msg.split("#");
@@ -120,6 +146,12 @@ public class CoreService {
                         }
                         redisUtil.remove(fromUserName +"key");
                     }  else if ("exercise".equals(redisKey)) {
+                        if(!studentService.checkIsBandStunum(fromUserName)){
+                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
+                            // 将文本消息对象转换成xml
+                            respXml = MessageUtil.messageToXml(textMessage);
+                            return respXml;
+                        }
                         if (!redisUtil.exists(fromUserName + ExamConst.exam_type_exercise)) {
                             redisUtil.remove(fromUserName+"key");
                             redisUtil.remove(fromUserName + "subjectNumber");

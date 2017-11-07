@@ -4,6 +4,7 @@ import online.pangge.exam.domain.Student;
 import online.pangge.exam.mapper.StudentMapper;
 import online.pangge.exam.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +54,12 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public List<Student> selectByStunum(Long stunum) {
         return studentMapper.selectByStunum(stunum);
+    }
+
+    @Override
+    public boolean checkIsBandStunum(String wechatName) {
+        List<Student> bandStudents = studentMapper.selectByWechatName(wechatName);
+        Student s =  DataAccessUtils.singleResult(bandStudents);
+        return s!=null;
     }
 }
