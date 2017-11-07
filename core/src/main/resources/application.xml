@@ -12,7 +12,7 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!--0.引入数据库连接信息-->
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties,classpath:oss.properties" system-properties-mode="NEVER"/>
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties,classpath:aliyunoss.properties" system-properties-mode="NEVER"/>
 	<import resource="classpath:spring-jedis.xml"/>
 	<!--1.数据库连接池-->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
