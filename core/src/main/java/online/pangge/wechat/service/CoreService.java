@@ -16,6 +16,8 @@ import online.pangge.wechat.damain.message.resp.NewsMessage;
 import online.pangge.wechat.damain.message.resp.TextMessage;
 import online.pangge.wechat.util.MessageUtil;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,7 @@ public class CoreService {
      *
      * @return xml
      */
+    private static Logger log = LoggerFactory.getLogger(CoreService.class);
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
@@ -279,6 +282,7 @@ public class CoreService {
                 wrongSubjectLink.setLastUpdateDate(new Date());
                 wrongSubjectLink.setUserId(studentService.selectByWechatName(fromusername).get(0).getStunum());
                 wrongSubjects.add(wrongSubjectLink);
+                log.info("insert wrong subject with id:"+wrongSubjectLink.getSubId());
             }
         }
         wrongSubjectService.insertWrongSubjectLinks(wrongSubjects);
