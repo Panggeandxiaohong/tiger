@@ -28,11 +28,11 @@
     <property name="ossEndpoint" value="${oss.ossEndpoint}"/>
 </bean>-->
 <bean id="ossutil" class="online.pangge.exam.util.OSSUtil" init-method="init" destroy-method="destroy" lazy-init="false">
-    <property name="accessKeyId" value="LTAIQ2JW18nVq5co"/>
-    <property name="accessKeySecret" value="4TTXozSBoVZ6ysrBCSmtqWID2QjNjY"/>
-    <property name="bucketName" value="pangge"/>
-    <property name="timeout" value="5000"/>
-    <property name="ossEndpoint" value="oss-cn-shenzhen.aliyuncs.com"/>
+    <property name="accessKeyId" value="${oss.accessKeyId}"/>
+    <property name="accessKeySecret" value="${oss.accessKeySecret}"/>
+    <property name="bucketName" value="${oss.bucketName}"/>
+    <property name="timeout" value="${oss.timeout}"/>
+    <property name="ossEndpoint" value="${oss.ossEndpoint}"/>
 </bean>
     <!-- redis服务器中心 -->
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
