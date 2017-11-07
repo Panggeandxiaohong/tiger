@@ -213,9 +213,9 @@ public class CoreService {
         } else {
             subjectNumber = Integer.valueOf(redisUtil.get(fromUserName +"subjectNumber").toString());
         }
-        article.setTitle("这是第"+subjectNumber+"题：");
+        article.setTitle("第"+subjectNumber+"题,"+s.getSubjectType().getTypeName()+"：");
         redisUtil.set(fromUserName + "subjectNumber", subjectNumber+1);
-        article.setDescription(s.getQuestion());
+        article.setDescription("点此进入正题。");
         article.setPicUrl("");
         subjectString = URLEncoder.encode(subjectString,"utf-8");
         article.setUrl("http://39.108.2.41/exam.do?subjectString="+subjectString);
