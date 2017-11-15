@@ -98,7 +98,7 @@ public class CoreService {
                             return respXml;
                         }
                         redisUtil.set(fromUserName +"key", "count", 3600L);
-                        responseStr = "真正的开始统计。。。";
+                        responseStr = "真正的开始统计了。。。";
                     }else if(msg.contains("绑定")){
                         redisUtil.set(fromUserName +"key", "bind", 3600L);
                         responseStr = "开始绑定，请输入学号#密码进行绑定，比如：000#000";
