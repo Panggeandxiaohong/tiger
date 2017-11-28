@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>试题变更提醒</title>
+</head>
+<body>
+有一份试题经过更改：${change!""}<br/>
+<#list subjects as subject>
+    question : ${subject.question!""}<br/>
+    subjectType : ${subject.subjectType.typeName!""}<br/>
+    score : ${subject.score!""}<br/>
+    classes : ${subject.classes.className!""}<br/>
+    answerA : ${subject.answerA!""}<br/>
+    answerB : ${subject.answerB!""}<br/>
+    answerC : ${subject.answerC!""}<br/>
+    answerD : ${subject.answerD!""}<br/>
+    answer : ${subject.answer!""}<br/>
+    explain : ${subject.explain!""}<br/>
+    url : ${subject.url!""}<br/>
+    addtime : ${subject.addtime?string("yyyy-MM-dd")}<br/>
+    mediaType : ${subject.mediaType!""}<br/>
+</#list>
+</body>
+</html>

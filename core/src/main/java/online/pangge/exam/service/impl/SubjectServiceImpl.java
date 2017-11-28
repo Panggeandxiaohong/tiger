@@ -2,11 +2,13 @@ package online.pangge.exam.service.impl;
 
 import online.pangge.exam.domain.Admin;
 import online.pangge.exam.domain.Subject;
+import online.pangge.exam.email.service.TemplateEmailServiceImpl;
 import online.pangge.exam.mapper.ClassesMapper;
 import online.pangge.exam.mapper.SubjectMapper;
 import online.pangge.exam.mapper.SubjectTypeMapper;
 import online.pangge.exam.page.PageResult;
 import online.pangge.exam.query.SubjectQueryObject;
+import online.pangge.exam.service.EmailService;
 import online.pangge.exam.service.ISubjectService;
 import online.pangge.exam.util.ExamConst;
 import online.pangge.exam.util.FileUploadUtil;
@@ -34,6 +36,9 @@ import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
  */
 @Service
 public class SubjectServiceImpl implements ISubjectService {
+    @Autowired
+    private EmailService emailService;
+
     @Autowired
     private SubjectMapper subjectMapper;
 
@@ -65,7 +70,9 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public List<Subject> selectAll() {
-        return subjectMapper.selectAll();
+        List<Subject> allSubject = subjectMapper.selectAll();
+       // emailService.sendEmailWhitSubjectChange(allSubject,"insert");
+        return allSubject;
     }
 
     @Override
