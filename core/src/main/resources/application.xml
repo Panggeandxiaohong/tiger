@@ -12,7 +12,7 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!--0.引入数据库连接信息-->
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties,classpath:aliyunoss.properties" system-properties-mode="NEVER"/>
+	<context:property-placeholder location="classpath:mail.properties,classpath:jdbc.properties,classpath:redis.properties,classpath:aliyunoss.properties" system-properties-mode="NEVER"/>
 	<import resource="classpath:spring-jedis.xml"/>
 	<!--1.数据库连接池-->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
@@ -35,11 +35,11 @@
 
 
 	<!--3.事务管理器-->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<!--	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
-	</bean>
+	</bean>-->
 	<!--4.事务模板-->
-	<tx:advice id="advice" transaction-manager="transactionManager">
+<!--	<tx:advice id="advice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
 			<tx:method name="select*" read-only="true" propagation="SUPPORTS"/>
@@ -47,7 +47,7 @@
 			<tx:method name="list*" read-only="true" propagation="REQUIRED"/>
 			<tx:method name="*"/>
 		</tx:attributes>
-	</tx:advice>
+	</tx:advice>-->
 <!--	<bean id="redisCache" class="online.pangge.exam.util.RedisCache">
 		<property name="redisUtil" ref="redisUtil"/>
 	</bean>-->
@@ -64,5 +64,28 @@
 	<!--6.mapper扫描-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="online.pangge.*.mapper"/>
+	</bean>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}"/>
+		<property name="port" value="${mail.port}"/>
+		<property name="defaultEncoding" value="${mail.encoding}"/>
+		<property name="username" value="${mail.username}"/>
+		<property name="password" value="${mail.password}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.timeout">20000</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="${email.template.freemarker.path}"/>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="default_encoding">utf-8</prop>
+				<prop key="locale">en_US</prop>
+				<prop key="classic_compatible">true</prop>
+			</props>
+		</property>
 	</bean>
 </beans>
