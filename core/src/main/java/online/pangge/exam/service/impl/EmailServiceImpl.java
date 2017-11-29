@@ -24,6 +24,7 @@ public class EmailServiceImpl implements EmailService {
         email.setSubject("Subject change alert!");
         emailData.put("change",change);
         emailData.put("subjects",subject);
+        System.out.println("send email ....");
         return emailSender.sendEmail(email,"subjectTemplate.html",emailData);
     }
 }

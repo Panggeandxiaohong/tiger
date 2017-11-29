@@ -60,10 +60,12 @@ public class TemplateEmailServiceImpl {
                     helper.addAttachment(MimeUtility.encodeWord(file.getName()),file);
                 }
             }
+            System.out.println("begin send ...");
             mailSender.send(message);
         }catch(Exception e){
             e.printStackTrace();
         }
+        System.out.println("end send ...");
         return true;
     }
 }
