@@ -105,6 +105,7 @@ public class UploadSubjectController {
         List<Subject> subjects = subjectService.selectAll();
         data.put("subjects", subjects);
         try {
+            System.out.println("template path = = = = == = = == "+templateFile.getPath());
             in = new BufferedInputStream(new FileInputStream(templateFile));
             out = resp.getOutputStream();
             Workbook workBook = fmt.transformXLS(in, data);
