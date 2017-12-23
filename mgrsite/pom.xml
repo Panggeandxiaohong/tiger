@@ -89,6 +89,11 @@
                 <configuration>
                     <port>8080</port>
                     <path>/</path>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <ignorePackaging>true</ignorePackaging>
+                    <systemProperties>
+                        <JAVA_OPTS>-Xms2048m -Xmx4096m -XX:MaxPermSize=4096m</JAVA_OPTS>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>

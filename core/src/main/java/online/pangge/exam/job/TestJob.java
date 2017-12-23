@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +29,6 @@ public class TestJob implements Job<String> {
     @Override
     public void process(String s) {
         log.info("do process");
-        System.out.println("test job = = = = = "+s);
+        System.out.println("test job = = = = =,Time =  "+new Date());
     }
 }
