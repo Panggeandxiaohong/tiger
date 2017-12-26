@@ -27,4 +27,14 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("send email ....");
         return emailSender.sendEmail(email,"subjectTemplate.html",emailData);
     }
+
+    @Override
+    public boolean sendEmailWhitSubjectCount(Map<String,Object> datas) {
+        Email email = new Email();
+        email.setFrom("m13427598892@163.com");
+        email.setTo("346264873@qq.com");
+        email.setSubject("Subject change alert!");
+        System.out.println("send email ....");
+        return emailSender.sendEmail(email,"subjectTemplate.html",datas);
+    }
 }
