@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component("SendSubjectDetail")
-public class SendSubjectDetail implements Job<Map<String,Object>> {
+public class SendSubjectDetail implements Job<Map<String, Object>> {
 
     private static Logger log = LoggerFactory.getLogger(online.pangge.exam.job.SendSubjectDetail.class);
 
@@ -21,36 +21,39 @@ public class SendSubjectDetail implements Job<Map<String,Object>> {
 
     @Autowired
     private EmailService emailService;
+
     @Override
-    public List<Map<String,Object>> dataSource() {
-       List<Map<String,Object>> datas = Collections.EMPTY_LIST;
-       List<Subject> allSubject =  subjectService.selectAll();
-       List<Subject> choise=Collections.EMPTY_LIST;
-       List<Subject> empty=Collections.EMPTY_LIST;
-       List<Subject> judge=Collections.EMPTY_LIST;
-       Map<String,Object> data = new HashMap<>();
-       for(Subject s : allSubject){
-           switch (s.getSubjectType().getTypeName()){
-               case ExamContext.EXAM_CHOICE:
-                   choise.add(s);
-                   break;
-               case ExamContext.EXAM_EMPTY:
-                   empty.add(s);
-                   break;
-               case ExamContext.EXAM_JUDGE:
-                   judge.add(s);
-                   break;
-           }
-       }
-       data.put("allSubject",allSubject.size());
-       data.put("choiseSubject",choise.size());
-       data.put("emptySbject",empty.size());
-       data.put("judgeSbject",judge.size());
-       return datas;
+    public List<Map<String, Object>> dataSource() {
+        List<Map<String, Object>> datas = Collections.EMPTY_LIST;
+        List<Subject> allSubject = subjectService.selectAll();
+        List<Subject> choise = Collections.EMPTY_LIST;
+        List<Subject> empty = Collections.EMPTY_LIST;
+        List<Subject> judge = Collections.EMPTY_LIST;
+        Map<String, Object> data = new HashMap<>();
+        for (Subject s : allSubject) {
+            switch (s.getSubjectType().getTypeName()) {
+                case ExamContext.EXAM_CHOICE:
+                    choise.add(s);
+                    break;
+                case ExamContext.EXAM_EMPTY:
+                    empty.add(s);
+                    break;
+                case ExamContext.EXAM_JUDGE:
+                    judge.add(s);
+                    break;
+            }
+        }
+        data.put("allSubject", allSubject.size());
+        data.put("choiseSubject", choise.size());
+        data.put("emptySbject", empty.size());
+        data.put("judgeSbject", judge.size());
+        System.out.println(data.toString());
+        log.info(data.toString());
+        return datas;
     }
 
     @Override
-    public void process(Map<String,Object> s) {
+    public void process(Map<String, Object> s) {
         emailService.sendEmailWhitSubjectCount(s);
     }
 }
