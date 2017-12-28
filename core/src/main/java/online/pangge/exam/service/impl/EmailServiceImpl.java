@@ -35,6 +35,6 @@ public class EmailServiceImpl implements EmailService {
         email.setTo("346264873@qq.com");
         email.setSubject("subject count!");
         System.out.println("send email ....");
-        return emailSender.sendEmail(email,"subjectCount.html",datas);
+        return emailSender.sendEmail(email,"SubjectCount.html",datas);
     }
 }
