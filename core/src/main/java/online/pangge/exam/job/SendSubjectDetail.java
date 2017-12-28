@@ -24,7 +24,7 @@ public class SendSubjectDetail implements Job<Map<String, Object>> {
 
     @Override
     public List<Map<String, Object>> dataSource() {
-        List<Map<String, Object>> datas = Collections.EMPTY_LIST;
+        List<Map<String, Object>> datas = new ArrayList<>();
         List<Subject> allSubject = subjectService.selectAll();
         List<Subject> choise = Collections.EMPTY_LIST;
         List<Subject> empty = Collections.EMPTY_LIST;
@@ -47,8 +47,9 @@ public class SendSubjectDetail implements Job<Map<String, Object>> {
         data.put("choiseSubject", choise.size());
         data.put("emptySbject", empty.size());
         data.put("judgeSbject", judge.size());
-        System.out.println(data.toString());
+        System.out.println("datasources---------"+data.toString());
         log.info(data.toString());
+        datas.add(data);
         return datas;
     }
 

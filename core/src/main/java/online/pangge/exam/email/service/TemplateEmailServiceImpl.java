@@ -62,6 +62,7 @@ public class TemplateEmailServiceImpl {
             }
             System.out.println("begin send ...");
             System.out.println("use template..."+templateName);
+            System.out.println("data is ..."+model.toString());
             mailSender.send(message);
         }catch(Exception e){
             e.printStackTrace();

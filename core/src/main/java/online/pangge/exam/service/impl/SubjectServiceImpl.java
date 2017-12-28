@@ -71,7 +71,7 @@ public class SubjectServiceImpl implements ISubjectService {
     @Override
     public List<Subject> selectAll() {
         List<Subject> allSubject = subjectMapper.selectAll();
-        emailService.sendEmailWhitSubjectChange(allSubject,"insert");
+//        emailService.sendEmailWhitSubjectChange(allSubject,"insert");
         return allSubject;
     }
 
