@@ -33,8 +33,8 @@ public class EmailServiceImpl implements EmailService {
         Email email = new Email();
         email.setFrom("m13427598892@163.com");
         email.setTo("346264873@qq.com");
-        email.setSubject("Subject change alert!");
+        email.setSubject("subject count!");
         System.out.println("send email ....");
-        return emailSender.sendEmail(email,"subjectTemplate.html",datas);
+        return emailSender.sendEmail(email,"subjectCount.html",datas);
     }
 }
