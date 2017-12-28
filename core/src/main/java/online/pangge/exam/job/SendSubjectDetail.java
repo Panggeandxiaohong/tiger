@@ -54,6 +54,7 @@ public class SendSubjectDetail implements Job<Map<String, Object>> {
 
     @Override
     public void process(Map<String, Object> s) {
+        System.out.println("this is SendSubjectDetail");
         emailService.sendEmailWhitSubjectCount(s);
     }
 }
