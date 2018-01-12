@@ -60,8 +60,8 @@ public class PermissionServiceImpl implements IPermissionService,ApplicationCont
     }
 
     @Override
-    public List<String> queryByEid(Long eid) {
-        return permissionDAO.queryByEid(eid);
+    public List<String> queryByAdminId(Long adminId) {
+        return permissionDAO.queryByAdminid(adminId);
     }
 
     @Override

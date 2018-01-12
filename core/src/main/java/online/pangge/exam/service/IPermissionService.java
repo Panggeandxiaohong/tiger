@@ -30,7 +30,7 @@ public interface IPermissionService {
      * @param eid   员工id
      * @return
      */
-    List<String> queryByEid(Long eid);
+    List<String> queryByAdminId(Long eid);
 
     /**
      * 加载所有权限

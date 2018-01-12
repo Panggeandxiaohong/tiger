@@ -8,19 +8,19 @@ import java.util.List;
  * Created by jie34 on 2017/4/9.
  */
 public interface IStudentService {
-    int deleteByPrimaryKey(Long id);
+    public int deleteByPrimaryKey(Long id);
 
-    int insert(Student record);
+    public int insert(Student record);
 
-    Student selectByPrimaryKey(Long id);
+    public Student selectByPrimaryKey(Long id);
 
-    List<Student> selectAll();
+    public List<Student> selectAll();
 
-    int updateByPrimaryKey(Student record);
+    public int updateByPrimaryKey(Student record);
 
-    List<Student> selectByWechatName(String wechatname);
+    public List<Student> selectByWechatName(String wechatname);
 
-    List<Student> selectByStunum(Long stunum);
+    public List<Student> selectByStunum(Long stunum);
 
-    boolean checkIsBandStunum(String wechatName);
+    public boolean checkIsBandStunum(String wechatName);
 }

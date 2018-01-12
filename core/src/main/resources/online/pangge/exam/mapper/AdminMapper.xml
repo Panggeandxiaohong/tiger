@@ -6,31 +6,47 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="is_super_admin" property="isSuperAdmin" jdbcType="BIT" />
+    <collection property="roles" select="online.pangge.exam.mapper.RoleMapper.select" javaType="online.pangge.exam.domain.Role" >
+
+    </collection>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from admin
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="online.pangge.exam.domain.Admin" useGeneratedKeys="true" keyColumn="id" keyProperty="id" >
-    insert into admin (name, username, password
+    insert into admin (name, username, password,is_super_admin
       )
-    values (#{name,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
-      )
+    values (#{name,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{isSuperAdmin,jdbcType=BIT})
   </insert>
   <update id="updateByPrimaryKey" parameterType="online.pangge.exam.domain.Admin" >
     update admin
     set name = #{name,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR}
+      is_super_admin=#{isSuperAdmin,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select id, name, username, password
+    select id, name, username, password,is_super_admin
     from admin
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name, username, password
+    select id, name, username, password,is_super_admin
     from admin
+  </select>
+  <select id="selectAdminByUsernameAndPassword" resultMap="BaseResultMap">
+    select *
+    from admin where stunum=#{username} and password = #{password}
+  </select>
+  <select id="queryByAdminId" resultType="online.pangge.exam.domain.Role" parameterType="java.lang.Long" >
+    SELECT r.* from role r LEFT JOIN admin_role l ON (l.role_id = r.id) LEFT JOIN role_permission rp on rp.role_id = r.id WHERE l.admin_id = #{adminId}
+
+        SELECT p.resource FROM permission p
+        LEFT JOIN role_permission rp ON (rp.p_id = p.id)
+        LEFT JOIN admin_role ar ON (ar.role_id = rp.r_id)
+        WHERE ar.admin_id = #{adminId}
   </select>
 </mapper>

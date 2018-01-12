@@ -25,5 +25,5 @@ public interface IRoleService {
      */
     PageResult queryForPage(RoleQueryObject qo);
 
-
+    Role queryByAdminId(Long adminId);
 }

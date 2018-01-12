@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface RoleMapper {
-    int deleteByPrimaryKey(Long id);
+    public int deleteByPrimaryKey(Long id);
 
     int insert(Role record);
 
-    Role selectByPrimaryKey(Long id);
+    public Role selectByPrimaryKey(Long id);
 
     List<Role> selectAll();
 
@@ -33,4 +33,6 @@ public interface RoleMapper {
      * @param rid   要删除的角色id
      */
     void deletePermissionByRid(Long rid);
+
+    Role queryByAdminId(Long adminId);
 }

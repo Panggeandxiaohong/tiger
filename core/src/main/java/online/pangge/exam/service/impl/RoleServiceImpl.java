@@ -66,4 +66,9 @@ public class RoleServiceImpl implements IRoleService {
         return new PageResult(count.intValue(),result);
     }
 
+    @Override
+    public Role queryByAdminId(Long adminId) {
+        return roleDAO.queryByAdminId(adminId);
+    }
+
 }

@@ -1,7 +1,7 @@
 package online.pangge.exam.job;
 
 import online.pangge.exam.domain.Subject;
-import online.pangge.exam.service.EmailService;
+import online.pangge.exam.service.IEmailService;
 import online.pangge.exam.service.ISubjectService;
 import online.pangge.exam.util.ExamContext;
 import org.slf4j.Logger;
@@ -20,18 +20,18 @@ public class SendSubjectDetail implements Job<Map<String, Object>> {
     private ISubjectService subjectService;
 
     @Autowired
-    private EmailService emailService;
+    private IEmailService emailService;
 
     @Override
     public List<Map<String, Object>> dataSource() {
         List<Map<String, Object>> datas = new ArrayList<>();
         List<Subject> allSubject = subjectService.selectAll();
-        List<Subject> choise = Collections.EMPTY_LIST;
-        List<Subject> empty = Collections.EMPTY_LIST;
-        List<Subject> judge = Collections.EMPTY_LIST;
+        List<Subject> choise = new ArrayList<>();
+        List<Subject> empty = new ArrayList<>();
+        List<Subject> judge = new ArrayList<>();
         Map<String, Object> data = new HashMap<>();
         for (Subject s : allSubject) {
-            switch (s.getSubjectType().getTypeName()) {
+            switch (s.getSubjectType().getTypeCode()) {
                 case ExamContext.EXAM_CHOICE:
                     choise.add(s);
                     break;

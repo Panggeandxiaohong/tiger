@@ -254,16 +254,16 @@ $(function () {
         pagination: true,
         selectOnCheck: true,
         striped: true,
-        pageNumber: 1,
-        // pageSize: 10,
+        //pageNumber: 1,
+        // pageSize: 5,
         checkOnSelect: true,
-        // pageList: [1, 5, 10, 20, 40, 50],
+        pageList: [1, 5, 10],
         toolbar: "#subject_datagrid_tb",
         singleSelect: false,
         columns: [
             [
                 {field: 'id', align: 'center', title: '', checkbox: true},
-                {field: 'question', align: 'center', title: '问题', width: 1},
+                {field: 'question', align: 'center', title: '问的题', width: 1},
                 {field: 'subjectType', align: 'center', title: '题目类型', width: 1, formatter: cmdObj.typeFormatr},
                 {field: 'score', align: 'center', title: '分值', width: 1},
                 {field: 'classes', align: 'center', title: '科目', width: 1, formatter: cmdObj.classesFormatr},
@@ -280,21 +280,7 @@ $(function () {
             ]
         ]
     });
-    //设置分页控件
-    var p = $('#subject_datagrid').datagrid('getPager');
-    $(p).pagination({
-        // pageSize: 10,//每页显示的记录条数，默认为10
-        // pageList: [5, 10, 15],//可以设置每页记录条数的列表
-        beforePageText: '第',//页数文本框前显示的汉字
-        afterPageText: '页    共 {pages} 页',
-        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
-        onSelectPage: function (pageNumber, pageSize) {
-            $(this).pagination('loading');
-            alert('pageNumber:' + pageNumber + ',pageSize:' + pageSize);
-            $(this).pagination('loaded');
-        }
 
-    });
     classes.combobox({
         url: '/classes_getclasses.do',
         valueField: 'id',

@@ -3,6 +3,8 @@ package online.pangge.exam.service.impl;
 import online.pangge.exam.domain.Student;
 import online.pangge.exam.mapper.StudentMapper;
 import online.pangge.exam.service.IStudentService;
+import org.apache.ibatis.annotations.Param;
+import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Service;

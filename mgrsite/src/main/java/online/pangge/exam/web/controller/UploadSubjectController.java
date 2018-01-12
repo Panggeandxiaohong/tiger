@@ -7,10 +7,7 @@ import online.pangge.exam.query.SubjectQueryObject;
 import online.pangge.exam.service.IClassesService;
 import online.pangge.exam.service.ISubjectService;
 import online.pangge.exam.service.ISubjectTypeService;
-import online.pangge.exam.util.AjaxResult;
-import online.pangge.exam.util.ExamConst;
-import online.pangge.exam.util.OSSUtil;
-import online.pangge.exam.util.UserContext;
+import online.pangge.exam.util.*;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -77,6 +74,7 @@ public class UploadSubjectController {
 
     @RequestMapping("/upload.do")
     @ResponseBody
+    @RequiredPermission("上传题目")
     public AjaxResult subjectUpload(MultipartFile subjects, MultipartFile more_myfiles, HttpServletRequest req) {
         if (!ExamConst.subjectsFileType.contains(getFileType(subjects)) || !ExamConst.subjectFilesType.contains(getFileType(more_myfiles))) {
             return new AjaxResult(false, "操作失败！文件类型不正确！");
@@ -91,6 +89,7 @@ public class UploadSubjectController {
         return new AjaxResult(true, "操作成功！");
     }
 
+    @RequiredPermission("下载现有试题")
     @RequestMapping("/download_subject.do")
     public void downloadSubject(HttpServletResponse resp, HttpServletRequest req) throws IOException {
         String filePath = req.getSession().getServletContext().getRealPath("/download");
@@ -121,6 +120,7 @@ public class UploadSubjectController {
         }
     }
 
+    @RequiredPermission("下载模板")
     @RequestMapping("/download_template.do")
     public void subjectDownloadTemplate(HttpServletResponse resp, HttpServletRequest req) throws IOException {
         String filePath = req.getSession().getServletContext().getRealPath("/download");
@@ -144,6 +144,7 @@ public class UploadSubjectController {
 
     @RequestMapping("/delete.do")
     @ResponseBody
+    @RequiredPermission("删除试题")
     public AjaxResult deleteSubject(@RequestParam("ids[]") List<Long> params, String type) {
         AjaxResult result = null;
         String activeOrDelete = null;
@@ -163,6 +164,7 @@ public class UploadSubjectController {
 
     @RequestMapping("/save.do")
     @ResponseBody
+    @RequiredPermission("保存试题")
     public AjaxResult saveSubject(MultipartFile myfiles, HttpServletRequest request) {
         System.out.println("ininininin");
         AjaxResult result = null;

@@ -27,5 +27,4 @@ public class Student extends BaseDomain implements Serializable {
     private Date createTime;
     private Date lastUpdateTime;
 
-//    private List<Role> roles = new ArrayList<>();
 }

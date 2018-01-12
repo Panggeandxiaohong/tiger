@@ -22,10 +22,10 @@ public interface PermissionMapper {
     List<Permission> queryForPage(PermissionQueryObject qo);
 
     /**
-     * 查询员工id查询拥有权限
-     * @param eid   员工id
-     * @return  该员工拥有的权限表达式的集合
+     * 根据管理员id查询拥有权限
+     * @param adminId   管理员id
+     * @return  该管理拥有的权限表达式的集合
      */
-    List<String> queryByEid(Long eid);
+    List<String> queryByAdminid(Long adminId);
 
 }

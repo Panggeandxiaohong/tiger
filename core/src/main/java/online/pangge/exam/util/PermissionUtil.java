@@ -1,9 +1,11 @@
 package online.pangge.exam.util;
 
+import online.pangge.exam.domain.Admin;
 import online.pangge.exam.domain.Menu;
 import online.pangge.exam.domain.Permission;
 import online.pangge.exam.domain.Student;
 import online.pangge.exam.service.IPermissionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +24,9 @@ public class PermissionUtil {
 
     public static boolean checkPermission(String function) {
         HttpSession session = UserContext.getLocal().getSession();
-        Student currentUser = (Student) session.getAttribute(UserContext.USERINSESSION);
+        Admin currentUser = (Admin) session.getAttribute(UserContext.USERINSESSION);
         //判断是否是超级管理员,是就放行
-        if (currentUser.isAdminType()) {
+        if (currentUser.isSuperAdmin()) {
             return true;
         }
         if (CommonUtil.allPermissions.size() == 0) {
@@ -71,7 +73,7 @@ public class PermissionUtil {
         //遍历第一层,看第一层哪些元素需要权限控制
         for (int i = menus.size() - 1; i >= 0; i--) {
             menu = menus.get(i);
-            if (org.apache.commons.lang.StringUtils.isNotBlank(menu.getFunction())) {
+            if (StringUtils.isEmpty(menu.getFunction())) {
                 if (!permissions.contains(menu.getFunction())) {
                     //用户没有该菜单权限,删除该菜单
                     menus.remove(i);

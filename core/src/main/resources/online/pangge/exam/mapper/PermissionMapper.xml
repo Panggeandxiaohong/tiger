@@ -47,10 +47,10 @@
         select COUNT(*) from permission
         <include refid="where_sql"/>
     </select>
-    <select id="queryByEid" resultType="java.lang.String">
+    <select id="queryByAdminId" resultType="java.lang.String">
         SELECT p.resource FROM permission p
         LEFT JOIN role_permission rp ON (rp.p_id = p.id)
-        LEFT JOIN emp_role er ON (er.r_id = rp.r_id)
-        WHERE er.e_id = #{eid}
+        LEFT JOIN admin_role ar ON (ar.role_id = rp.r_id)
+        WHERE ar.admin_id = #{adminId}
     </select>
 </mapper>

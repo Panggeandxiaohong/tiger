@@ -3,6 +3,9 @@ package online.pangge.exam.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 public class Admin extends BaseDomain{
@@ -11,4 +14,8 @@ public class Admin extends BaseDomain{
     private String username;
 
     private String password;
+
+    private boolean isSuperAdmin;
+
+    private List<Role> roles = new ArrayList<>();
 }

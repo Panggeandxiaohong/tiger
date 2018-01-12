@@ -3,7 +3,7 @@ package online.pangge.exam.service.impl;
 import online.pangge.exam.domain.Subject;
 import online.pangge.exam.email.domain.Email;
 import online.pangge.exam.email.service.TemplateEmailServiceImpl;
-import online.pangge.exam.service.EmailService;
+import online.pangge.exam.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements IEmailService {
     @Autowired
     private TemplateEmailServiceImpl emailSender;
 
