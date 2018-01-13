@@ -27,9 +27,9 @@ public class LoginController {
 
     @RequestMapping("login.do")
     @ResponseBody
-    public AjaxResult login(HttpServletResponse response, String userName, String password) {
+    public AjaxResult login(HttpServletResponse response, String username, String password) {
         AjaxResult result = null;
-        Admin s = adminService.login(userName, password);
+        Admin s = adminService.login(username, password);
         if (s != null) {
             UserContext.setUser(s);
             List<Role> roles = s.getRoles();

@@ -35,6 +35,10 @@
     select id, sn, name
     from role
   </select>
+    <select id="selectByAdminId" resultMap="BaseResultMap">
+    select r.id, r.sn, r.name
+    from role r JOIN admin_role ar ON ar.rolr_id = r.id
+  </select>
     <sql id="where_sql">
         <where>
         </where>

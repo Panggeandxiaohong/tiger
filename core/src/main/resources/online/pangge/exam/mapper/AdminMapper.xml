@@ -7,7 +7,7 @@
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="is_super_admin" property="isSuperAdmin" jdbcType="BIT" />
-    <collection property="roles" column="id" select="online.pangge.exam.mapper.RoleMapper.selectByPrimaryKey" ofType="online.pangge.exam.domain.Role" />
+    <collection property="roles" column="id" select="online.pangge.exam.mapper.RoleMapper.selectByAdminId" ofType="online.pangge.exam.domain.Role" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from admin
@@ -37,7 +37,7 @@
   </select>
   <select id="selectAdminByUsernameAndPassword" resultMap="BaseResultMap">
     select *
-    from admin where stunum=#{username} and password = #{password}
+    from admin where username=#{username} and password = #{password}
   </select>
   <select id="queryByAdminId" resultType="online.pangge.exam.domain.Role" parameterType="java.lang.Long" >
     SELECT r.* from role r LEFT JOIN admin_role l ON (l.role_id = r.id) LEFT JOIN role_permission rp on rp.role_id = r.id WHERE l.admin_id = #{adminId}

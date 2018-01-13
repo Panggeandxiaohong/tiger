@@ -4,9 +4,11 @@ import online.pangge.exam.domain.Admin;
 import online.pangge.exam.mapper.AdminMapper;
 import online.pangge.exam.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AdminServiceImpl implements IAdminService {
 
     @Autowired
