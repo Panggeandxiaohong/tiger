@@ -7,9 +7,7 @@
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="is_super_admin" property="isSuperAdmin" jdbcType="BIT" />
-    <collection property="roles" select="online.pangge.exam.mapper.RoleMapper.select" javaType="online.pangge.exam.domain.Role" >
-
-    </collection>
+    <collection property="roles" column="id" select="online.pangge.exam.mapper.RoleMapper.selectByPrimaryKey" ofType="online.pangge.exam.domain.Role" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from admin
