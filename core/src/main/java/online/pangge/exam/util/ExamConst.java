@@ -21,21 +21,17 @@ public class ExamConst {
     public static final String exam_type_exam = "exam";
     public static final String exam_type_answer = "answer";
 
-    public static final String wechat_material_type_image = "image";
-    public static final String wechat_material_type_text = "text";
-    public static final String wechat_material_type_voice = "voice";
-    public static final String wechat_material_type_video = "video";
-    public static final String wechat_material_type_thumb = "thumb";
+    public enum mediaType{
+        image,text,voice,video,thumb
+    }
     public static final Long wechat_subject_type_choice = 1L;
-
     public static final Long wechat_subject_type_empty = 2L;
     public static final Long wechat_subject_type_Judgment = 3L;
     public static final String subject_process_status_readyforposting = "ReadyForPosting";
+    public enum processStatus{
+        Active,Deleted,Offline,Inactive
+    }
 
-    public static final String subject_process_status_active = "Active";
-    public static final String subject_process_status_delete = "Deleted";
-    public static final String subject_process_status_Offline = "Offline";
-    public static final String subject_process_status_inactive = "Inactive";
     public static List<String> images = new ArrayList<>();
 
     public static List<String> voices = new ArrayList<>();

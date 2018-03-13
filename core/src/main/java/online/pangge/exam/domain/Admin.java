@@ -15,7 +15,7 @@ public class Admin extends BaseDomain{
 
     private String password;
 
-    private boolean isSuperAdmin;
+    private Boolean isSuperAdmin;
 
     private List<Role> roles = new ArrayList<>();
 }

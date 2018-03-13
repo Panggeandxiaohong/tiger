@@ -35,15 +35,15 @@
     <property name="ossEndpoint" value="${aliyunoss.ossEndpoint}"/>
 </bean>
     <!-- redis服务器中心 -->
-    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
         <property name="poolConfig" ref="poolConfig" />
         <property name="port" value="${redis.port}" />
         <property name="hostName" value="${redis.host}" />
         <property name="password" value="${redis.password}" />
-        <property name="timeout" value="${redis.timeout}" ></property>
+        <property name="timeout" value="${redis.timeout}" />
     </bean >
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
-        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
         <property name="keySerializer" >
             <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
         </property>
@@ -58,22 +58,37 @@
         </property>
     </bean >
 
-    <!-- cache配置-->
+    <!-- cache配置
     <bean id="methodCacheInterceptor" class="online.pangge.exam.util.MethodCacheInterceptor" >
         <property name="redisUtil" ref="redisUtil" />
     </bean >
+     clean配置
+    <bean id="cleanCacheInterceptor" class="online.pangge.exam.util.CleanCacheInterceptor" >
+        <property name="redisUtil" ref="redisUtil" />
+    </bean >-->
     <bean id="redisUtil" class="online.pangge.exam.util.RedisUtil" >
         <property name="redisTemplate" ref="redisTemplate" />
     </bean >
+    <!--     <bean id="theTracingBeforeAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+              <property name="mappedNames">
+                  <list>
+                      <value>select*</value>
+                      <value>insert*</value>
+                      <value>delete*</value>
+                      <value>update*</value>
+                  </list>
+              </property>
+              <property name="advice">
+                  <ref bean="methodCacheInterceptor             </property>
+          </bean>
+       <bean id="theTracingBeforeAdvisor2"  class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+              <property name="mappedNames">
+                  <list>
 
-    <bean id="theTracingBeforeAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
-          <property name="mappedName">
-    <!--可以使用mappedNames定义方法列表-->
-              <value>select*</value>   <!-- 方法名 -->
-          </property>
-          <property name="advice">
-              <ref bean="methodCacheInterceptor"/>
-          </property>
-      </bean>
-
+                  </list>
+              </property>
+              <property name="advice">
+                  <ref bean="cleanCacheInterceptor"/>
+              </property>
+          </bean>-->
 </beans>

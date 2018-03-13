@@ -61,7 +61,7 @@ public class PermissionServiceImpl implements IPermissionService,ApplicationCont
 
     @Override
     public List<String> queryByAdminId(Long adminId) {
-        return permissionDAO.queryByAdminid(adminId);
+        return permissionDAO.queryByAdminId(adminId);
     }
 
     @Override

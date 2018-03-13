@@ -178,4 +178,7 @@ public final class RedisUtil {
             RedisTemplate<Serializable, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+    public Set<Serializable> keys(String parrent){
+        return redisTemplate.keys(parrent);
+    }
 }

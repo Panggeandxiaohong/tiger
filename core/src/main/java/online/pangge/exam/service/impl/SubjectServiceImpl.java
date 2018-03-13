@@ -132,7 +132,7 @@ public class SubjectServiceImpl implements ISubjectService {
                     subject.setClasses(classesMapper.selectByPrimaryKey(Math.round((xssfRow.getCell(9).getNumericCellValue()))));
                     subject.setUrl(getValue(xssfRow.getCell(10)));
                     subject.setMediaType(getValue(xssfRow.getCell(11)));
-                    subject.setProcessStatus(ExamConst.subject_process_status_inactive);
+                    subject.setProcessStatus(ExamConst.processStatus.Inactive.name());
                     subject.setAddtime(new Date());
                     Admin admin = new Admin();
                     admin.setId(1L);
@@ -178,7 +178,7 @@ public class SubjectServiceImpl implements ISubjectService {
                     subject.setClasses(classesMapper.selectByPrimaryKey(Math.round((hssfRow.getCell(9).getNumericCellValue()))));
                     subject.setUrl(getValue(hssfRow.getCell(10)));
                     subject.setMediaType(getValue(hssfRow.getCell(11)));
-                    subject.setProcessStatus(ExamConst.subject_process_status_active);
+                    subject.setProcessStatus(ExamConst.processStatus.Active.name());
                     list.add(subject);
                 }
             }

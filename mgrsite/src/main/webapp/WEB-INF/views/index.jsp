@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>微信考试系统</title>
+    <%@ include file="common.jsp"%>
+    <script type="text/javascript" src="/js/views/index.js"></script>
 </head>
 <body class="easyui-layout">
 <div data-options="region:'north'" style="height:80px;background: url('/image/back.png') no-repeat;background-size:cover;">
@@ -23,7 +25,7 @@
     </div>
 </div>
 <div data-options="region:'south'" style="height:25px;background: url('/image/back1.png') no-repeat;background-size:cover;">
-    <center>版权说明,侵权收费</center>
+    <center>版权所有,侵权收费</center>
 </div>
 </body>
 </html>

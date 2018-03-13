@@ -1,18 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="online.pangge.exam.mapper.SubjectTypeMapper" >
+  <!--<cache type="online.pangge.exam.util.RedisCache"/>-->
+  <!--<cache type="org.mybatis.caches.redis.RedisCache"/>-->
   <resultMap id="BaseResultMap" type="online.pangge.exam.domain.SubjectType" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="type_code" property="typeCode" jdbcType="VARCHAR" />
   </resultMap>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from subject_type
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByIds" parameterType="java.lang.Long">
+    delete from subject_type
+    where id IN
+    <foreach collection="list" item="typeId" index="index"
+             open="(" close=")" separator=",">
+      #{typeId}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="online.pangge.exam.domain.SubjectType" useGeneratedKeys="true" keyColumn="id"
+          keyProperty="id">
+    insert into subject_type (type_name, type_code)
+    values (#{typeName,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="online.pangge.exam.domain.SubjectType">
+    update subject_type
+    set type_name = #{typeName,jdbcType=VARCHAR},
+    type_code = #{typeCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
     select id, type_name,type_code
     from subject_type
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, type_name,type_code
     from subject_type
+  </select>
+  <select id="queryCount" resultType="long">
+    select count(id) from subject_type
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select id, type_name,type_code from subject_type
+    <if test="page!=null">
+      limit #{start},#{rows}
+    </if>
   </select>
 </mapper>

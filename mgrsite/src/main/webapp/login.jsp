@@ -18,7 +18,7 @@
               console.log(1);
               if (data.success){
                   //跳转到首页
-                  window.location.href="/index"
+                  window.location.href="/index.do"
               }else {
                   //返回登录界面
                   alert(data.msg);
@@ -53,7 +53,7 @@
       </div>
     </form>
   </div>
-  <div class="bottom">CRM©2016 java攻城狮. www.520it.com</div>
+  <div class="bottom">版权所有，侵权收费</div>
 </div>
 <script type="text/javascript">
     window.onload = function(){

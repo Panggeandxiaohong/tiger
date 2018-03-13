@@ -1,9 +1,9 @@
 package online.pangge.exam.web.controller;
 
-import online.pangge.exam.domain.SubjectType;
+import online.pangge.exam.domain.Admin;
 import online.pangge.exam.page.PageResult;
 import online.pangge.exam.query.QueryObject;
-import online.pangge.exam.service.ISubjectTypeService;
+import online.pangge.exam.service.IAdminService;
 import online.pangge.exam.util.AjaxResult;
 import online.pangge.exam.util.RequiredPermission;
 import org.apache.commons.lang3.StringUtils;
@@ -16,43 +16,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-/**
- * Created by jie34 on 2017/6/17.
- */
 @Controller
-@RequestMapping("/subjectType")
-public class SubjectTypeController {
+@RequestMapping("/admin")
+public class AdminController {
     @Autowired
-    private ISubjectTypeService subjectTypeService;
+    private IAdminService adminService;
 
     @RequestMapping("/index.do")
     @RequiredPermission("管理员")
-    public String subjectType(){
-        return "subjectType";
+    public String admin(){
+        return "admin";
     }
 
-    @RequestMapping("/type_list.do")
+    @RequestMapping("/admin_list.do")
     @RequiredPermission("列出管理员")
     @ResponseBody
-    public List<SubjectType> getTypeList(){
-        return subjectTypeService.selectAll();
-    }
-    @RequestMapping("/type_page.do")
-    @RequiredPermission("列出管理员")
-    @ResponseBody
-    public PageResult getTypePage(HttpServletRequest req){
+    public PageResult getAdminList(HttpServletRequest req){
         QueryObject qo = new QueryObject();
         qo.setPage(Integer.valueOf(StringUtils.isEmpty(req.getParameter("page")) ? "5" : req.getParameter("page")));
         qo.setRows(Integer.valueOf(StringUtils.isEmpty(req.getParameter("rows")) ? "5" : req.getParameter("rows")));
-        PageResult result =  subjectTypeService.page(qo);
+        PageResult result =  adminService.page(qo);
         return result;
     }
 
     @RequestMapping("/update.do")
     @RequiredPermission("更改管理员")
     @ResponseBody
-    public AjaxResult updateType(SubjectType subjectType){
-        int updateCount = subjectTypeService.updateByPrimaryKey(subjectType);
+    public AjaxResult updateAdmin(Admin admin){
+        int updateCount = adminService.updateByPrimaryKey(admin);
         if(updateCount>0){
             return new AjaxResult(true,"更改成功!");
         }
@@ -61,8 +52,8 @@ public class SubjectTypeController {
     @RequestMapping("/save.do")
     @RequiredPermission("新增管理员")
     @ResponseBody
-    public AjaxResult saveAdmin(SubjectType type){
-        int updateCount = subjectTypeService.insert(type);
+    public AjaxResult saveAdmin(Admin admin){
+        int updateCount = adminService.insert(admin);
         if(updateCount>0){
             return new AjaxResult(true,"新增成功!");
         }
@@ -72,7 +63,7 @@ public class SubjectTypeController {
     @RequiredPermission("删除管理员")
     @ResponseBody
     public AjaxResult deleteAdmin(@RequestParam("ids[]") List<Long> ids){
-        int updateCount = subjectTypeService.deleteByIds(ids);
+        int updateCount = adminService.deleteByIds(ids);
         if(updateCount>0){
             return new AjaxResult(true,"删除成功!");
         }

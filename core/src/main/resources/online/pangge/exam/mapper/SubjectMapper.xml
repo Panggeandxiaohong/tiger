@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="online.pangge.exam.mapper.SubjectMapper">
+    <!--<cache type="online.pangge.exam.util.RedisCache"/>-->
+    <!--<cache type="org.mybatis.caches.redis.RedisCache"/>-->
     <resultMap id="BaseResultMap" type="online.pangge.exam.domain.Subject">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="question" property="question" jdbcType="VARCHAR"/>
@@ -17,13 +19,13 @@
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="process_status" property="processStatus" jdbcType="VARCHAR"/>
         <association property="subjectType" javaType="online.pangge.exam.domain.SubjectType" column="subject_type"
-                     select="online.pangge.exam.mapper.SubjectTypeMapper.selectByPrimaryKey"/>
+                     select="online.pangge.exam.mapper.SubjectTypeMapper.selectByPrimaryKey"></association>
         <association property="classes" javaType="online.pangge.exam.domain.Classes" column="classes"
-                     select="online.pangge.exam.mapper.ClassesMapper.selectByPrimaryKey"/>
+                     select="online.pangge.exam.mapper.ClassesMapper.selectByPrimaryKey"></association>
         <association property="user" javaType="online.pangge.exam.domain.Student" column="userId"
-                     select="online.pangge.exam.mapper.StudentMapper.selectByPrimaryKey"/>
+                     select="online.pangge.exam.mapper.StudentMapper.selectByPrimaryKey"></association>
         <association property="adduser" javaType="online.pangge.exam.domain.Student" column="adduser"
-                     select="online.pangge.exam.mapper.AdminMapper.selectByPrimaryKey"/>
+                     select="online.pangge.exam.mapper.AdminMapper.selectByPrimaryKey"></association>
     </resultMap>
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
         update subject set process_status=#{process_status}

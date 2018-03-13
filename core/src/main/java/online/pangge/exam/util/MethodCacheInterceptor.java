@@ -6,9 +6,11 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Created by jie34 on 2017/4/13.
@@ -56,10 +58,22 @@ public class MethodCacheInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        Set<Serializable> keys = redisUtil.keys("*");
+        for(Serializable key : keys){
+            System.out.println("all keys = "+key);
+            if (redisUtil.exists(key.toString())) {
+                System.out.println(redisUtil.get(key.toString()).getClass());
+            }
+        }
         Object value = null;
-        System.out.println("进入拦截的方法");
+        System.out.println("进入拦截的方法"+invocation.getMethod().getName());
         String targetName = invocation.getThis().getClass().getName();
         String methodName = invocation.getMethod().getName();
+        Object[] args = invocation.getArguments();
+        for(Object o : args){
+            System.out.println("参数是:"+o);
+            System.out.println("参数类型是:"+o.getClass());
+        }
         System.out.println("targetName="+targetName+",methname="+methodName);
         // 不需要缓存的内容
         //if (!isAddCache(StringUtil.subStrForLastDot(targetName), methodName)) {
@@ -144,10 +158,82 @@ public class MethodCacheInterceptor implements MethodInterceptor {
                 sbu.append("_").append(arguments[i]);
             }
         }
+        System.out.println("cache key = "+sbu.toString());
         return sbu.toString();
     }
 
     public void setRedisUtil(RedisUtil redisUtil) {
         this.redisUtil = redisUtil;
     }
+
+
+   /* public void before(Method invocation, Object[] args, Object o) throws Throwable {
+        Set<Serializable> keys = redisUtil.keys("*");
+        for(Serializable key : keys){
+            System.out.println("all keys = "+key);
+            if (redisUtil.exists(key.toString())) {
+                System.out.println(redisUtil.get(key.toString()).getClass());
+            }
+        }
+        Object value = null;
+        System.out.println("进入拦截的方法"+invocation.getName());
+        String targetName = invocation.getClass().getName();
+        String methodName = invocation.getName();
+        for(Object o1 : args){
+            System.out.println("参数是:"+o);
+            System.out.println("参数类型是:"+o.getClass());
+        }
+        System.out.println("targetName="+targetName+",methname="+methodName);
+        // 不需要缓存的内容
+        //if (!isAddCache(StringUtil.subStrForLastDot(targetName), methodName)) {
+        if (!isAddCache(targetName, methodName)) {
+            System.out.println("此方法不需要缓存");
+            // 执行方法返回结果
+            invocation.invoke(o,args);
+        }
+        String key = getCacheKey(targetName, methodName, args);
+        System.out.println("key="+key);
+
+        try {
+            // 判断是否有缓存
+            if (redisUtil.exists(key)) {
+                System.out.println("有缓存，此时查询缓存的值");
+                Object i  = redisUtil.get(key);
+                System.out.println(i);
+                System.out.println(i instanceof Student);
+                SerializeUtil.unSerialize((byte[])i);
+            }
+            System.out.println("开始执行被拦截的方法");
+            // 写入缓存
+            value = invocation.proceed();
+            System.out.println(value==null);
+            System.out.println("无缓存，此时写入缓存，值为："+value);
+            if (value != null) {
+                final String tkey = key;
+                final Object tvalue = value;
+                System.out.println("开始写入缓存");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (tkey.startsWith("com.service.impl.xxxRecordManager")) {
+                            System.out.println("开启线程1，写入xxxRecordManager，key="+tkey);
+                            redisUtil.set(tkey, SerializeUtil.serialize(tvalue), xxxRecordManagerTime);
+                        } else if (tkey.startsWith("com.service.impl.xxxSetRecordManager")) {
+                            System.out.println("开启线程2，xxxSetRecordManager，key="+tkey);
+                            redisUtil.set(tkey, SerializeUtil.serialize(tvalue), xxxSetRecordManagerTime);
+                        } else {
+                            System.out.println("开启线程3，写入默认缓存，key="+tkey);
+                            redisUtil.set(tkey, SerializeUtil.serialize(tvalue), defaultCacheExpireTime);
+                        }
+                    }
+                }).start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (value == null) {
+                return invocation.proceed();
+            }
+        }
+        return value;
+    }*/
 }

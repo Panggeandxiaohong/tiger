@@ -2,6 +2,7 @@ package online.pangge.exam.web.controller;
 
 import online.pangge.exam.service.IPermissionService;
 import online.pangge.exam.util.AjaxResult;
+import online.pangge.exam.util.RequiredPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ public class PermissionController {
 
     @RequestMapping("/reload.do")
     @ResponseBody
+    @RequiredPermission("重载权限")
     public AjaxResult reloadPermission(){
         try {
             permissionService.reload();

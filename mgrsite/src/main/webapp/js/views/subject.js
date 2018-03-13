@@ -263,7 +263,7 @@ $(function () {
         columns: [
             [
                 {field: 'id', align: 'center', title: '', checkbox: true},
-                {field: 'question', align: 'center', title: '问的题', width: 1},
+                {field: 'question', align: 'center', title: '问题', width: 1},
                 {field: 'subjectType', align: 'center', title: '题目类型', width: 1, formatter: cmdObj.typeFormatr},
                 {field: 'score', align: 'center', title: '分值', width: 1},
                 {field: 'classes', align: 'center', title: '科目', width: 1, formatter: cmdObj.classesFormatr},
@@ -296,14 +296,13 @@ $(function () {
         panelHeight: 'auto'
     });
     subject_type_combobox.combobox({
-        url: '/type_list.do',
+        url: '/subjectType/type_list.do',
         valueField: 'id',
         textField: 'typeName',
-        // value:"数学",
         panelHeight: 'auto'
     });
     subject_type.combobox({
-        url: '/type_list.do',
+        url: '/subjectType/type_list.do',
         valueField: 'id',
         textField: 'typeName',
         // value:"数学",

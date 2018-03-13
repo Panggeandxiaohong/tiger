@@ -3,7 +3,6 @@ package online.pangge.exam.util;
 import online.pangge.exam.domain.Admin;
 import online.pangge.exam.domain.Menu;
 import online.pangge.exam.domain.Permission;
-import online.pangge.exam.domain.Student;
 import online.pangge.exam.service.IPermissionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class PermissionUtil {
         HttpSession session = UserContext.getLocal().getSession();
         Admin currentUser = (Admin) session.getAttribute(UserContext.USERINSESSION);
         //判断是否是超级管理员,是就放行
-        if (currentUser.isSuperAdmin()) {
+        if (currentUser.getIsSuperAdmin()) {
             return true;
         }
         if (CommonUtil.allPermissions.size() == 0) {
@@ -63,8 +62,8 @@ public class PermissionUtil {
      */
     public static void checkMenuPermission(List<Menu> menus) {
         //如果是超级管理员,就给他所有的权限
-        Student currentUser = (Student) UserContext.getLocal().getSession().getAttribute(UserContext.USERINSESSION);
-        if (currentUser.isAdminType()) {
+        Admin currentUser = (Admin) UserContext.getLocal().getSession().getAttribute(UserContext.USERINSESSION);
+        if (currentUser.getIsSuperAdmin()) {
             return;
         }
         Menu menu;

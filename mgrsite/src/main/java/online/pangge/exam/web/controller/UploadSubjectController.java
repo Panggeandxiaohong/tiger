@@ -46,6 +46,7 @@ public class UploadSubjectController {
     private OSSUtil ossUtil;
 
     @RequestMapping("/index.do")
+    @RequiredPermission("管理试题")
     public String subject() {
         return "subject";
     }
@@ -148,10 +149,10 @@ public class UploadSubjectController {
     public AjaxResult deleteSubject(@RequestParam("ids[]") List<Long> params, String type) {
         AjaxResult result = null;
         String activeOrDelete = null;
-        if (ExamConst.subject_process_status_delete.equals(type)) {
-            activeOrDelete = ExamConst.subject_process_status_delete;
+        if (ExamConst.processStatus.Deleted.name().equals(type)) {
+            activeOrDelete = ExamConst.processStatus.Deleted.name();
         } else {
-            activeOrDelete = ExamConst.subject_process_status_active;
+            activeOrDelete = ExamConst.processStatus.Active.name();
         }
         int deleteCount = subjectService.delete(params, activeOrDelete);
         if (deleteCount == 0) {
@@ -170,14 +171,14 @@ public class UploadSubjectController {
         AjaxResult result = null;
         Subject subject = new Subject();
         subject.setMediaType(request.getParameter("media_type"));
-        subject.setSubjectType(subjectTypeService.selectById(Long.valueOf(request.getParameter("subject_type"))));
+        subject.setSubjectType(subjectTypeService.selectByPrimaryKey(Long.valueOf(request.getParameter("subject_type"))));
         if (ExamConst.wechat_subject_type_choice.equals(subject.getSubjectType().getId())) {
             subject.setAnswerA(request.getParameter("answerA"));
             subject.setAnswerB(request.getParameter("answerB"));
             subject.setAnswerC(request.getParameter("answerC"));
             subject.setAnswerD(request.getParameter("answerD"));
         }
-        if (!ExamConst.wechat_material_type_text.equals(subject.getMediaType())) {
+        if (!ExamConst.mediaType.text.name().equals(subject.getMediaType())) {
             if (myfiles.isEmpty()) {
                 return new AjaxResult(false, "保存失败，请上传附件！");
             }
@@ -187,16 +188,16 @@ public class UploadSubjectController {
             CommonsMultipartFile cf = (CommonsMultipartFile) myfiles;
             DiskFileItem fi = (DiskFileItem) cf.getFileItem();
             File file = fi.getStoreLocation();
-            if (ExamConst.wechat_material_type_image.equals(subject.getMediaType())) {
+            if (ExamConst.mediaType.image.name().equals(subject.getMediaType())) {
                 if (!ExamConst.images.contains(fileType)) {
                     return new AjaxResult(false, "图片格式不正确！");
                 }
-            } else if (ExamConst.wechat_material_type_video.equals(subject.getMediaType())) {
+            } else if (ExamConst.mediaType.video.name().equals(subject.getMediaType())) {
                 if (!ExamConst.videos.contains(fileType)) {
                     return new AjaxResult(false, "视频格式不正确！");
                 }
                 return new AjaxResult(false, "系统暂不支持视频格式~");
-            } else if (ExamConst.wechat_material_type_voice.equals(subject.getMediaType())) {
+            } else if (ExamConst.mediaType.voice.name().equals(subject.getMediaType())) {
                 if (!ExamConst.voices.contains(fileType)) {
                     return new AjaxResult(false, "音频格式不正确！");
                 }
@@ -215,7 +216,7 @@ public class UploadSubjectController {
         subject.setAnswer(request.getParameter("answer"));
         subject.setExplain(request.getParameter("explain"));
         subject.setAddtime(new Date());
-        subject.setProcessStatus(ExamConst.subject_process_status_active);
+        subject.setProcessStatus(ExamConst.processStatus.Active.name());
         if (subjectService.insert(subject) > 0) {
             logger.info("新增题目成功:" + subject.toString());
             result = new AjaxResult(true, "保存成功");

@@ -26,6 +26,6 @@ public interface PermissionMapper {
      * @param adminId   管理员id
      * @return  该管理拥有的权限表达式的集合
      */
-    List<String> queryByAdminid(Long adminId);
+    List<String> queryByAdminId(Long adminId);
 
 }

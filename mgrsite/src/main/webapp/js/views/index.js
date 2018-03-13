@@ -1,6 +1,6 @@
 $(function () {
     $("#menu").tree({
-        url: '/queryForMenu',
+        url: '/queryForMenu.do',
         onClick: function (node) {
             node.attributes = $.parseJSON(node.attributes);
             var exist = $("#tabs").tabs("exists", node.text);

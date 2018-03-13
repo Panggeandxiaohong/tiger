@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="online.pangge.exam.mapper.AdminMapper" >
-  <resultMap id="BaseResultMap" type="online.pangge.exam.domain.Admin" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="is_super_admin" property="isSuperAdmin" jdbcType="BIT" />
-    <collection property="roles" column="id" select="online.pangge.exam.mapper.RoleMapper.selectByAdminId" ofType="online.pangge.exam.domain.Role" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+<mapper namespace="online.pangge.exam.mapper.AdminMapper">
+    <!--<cache type="online.pangge.exam.util.RedisCache"/>-->
+    <!--<cache type="org.mybatis.caches.redis.RedisCache"/>-->
+    <resultMap id="BaseResultMap" type="online.pangge.exam.domain.Admin">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="is_super_admin" property="isSuperAdmin" jdbcType="BIT"/>
+        <collection property="roles" column="id" select="online.pangge.exam.mapper.RoleMapper.selectByAdminId"
+                    ofType="online.pangge.exam.domain.Role"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from admin
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="online.pangge.exam.domain.Admin" useGeneratedKeys="true" keyColumn="id" keyProperty="id" >
+    <delete id="deleteByIds" parameterType="java.lang.Long">
+    delete from admin
+    where id IN
+        <foreach collection="list" item="adminId" index="index"
+                         open="(" close=")" separator=",">
+        #{adminId}
+    </foreach>
+  </delete>
+    <insert id="insert" parameterType="online.pangge.exam.domain.Admin" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
     insert into admin (name, username, password,is_super_admin
       )
     values (#{name,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{isSuperAdmin,jdbcType=BIT})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="online.pangge.exam.domain.Admin" >
+    <update id="updateByPrimaryKey" parameterType="online.pangge.exam.domain.Admin">
     update admin
     set name = #{name,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR}
+      password = #{password,jdbcType=VARCHAR},
       is_super_admin=#{isSuperAdmin,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
     select id, name, username, password,is_super_admin
     from admin
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, name, username, password,is_super_admin
     from admin
   </select>
-  <select id="selectAdminByUsernameAndPassword" resultMap="BaseResultMap">
+    <select id="selectAdminByUsernameAndPassword" resultMap="BaseResultMap">
     select *
     from admin where username=#{username} and password = #{password}
   </select>
-  <select id="queryByAdminId" resultType="online.pangge.exam.domain.Role" parameterType="java.lang.Long" >
-    SELECT r.* from role r LEFT JOIN admin_role l ON (l.role_id = r.id) LEFT JOIN role_permission rp on rp.role_id = r.id WHERE l.admin_id = #{adminId}
-
-        SELECT p.resource FROM permission p
-        LEFT JOIN role_permission rp ON (rp.p_id = p.id)
-        LEFT JOIN admin_role ar ON (ar.role_id = rp.r_id)
-        WHERE ar.admin_id = #{adminId}
-  </select>
+    <select id="queryCount" resultType="long">
+        select count(id) from admin
+    </select>
+    <select id="queryList" resultMap="BaseResultMap">
+        select * from admin
+        <if test="page!=null">
+            limit #{start},#{rows}
+        </if>
+    </select>
 </mapper>
