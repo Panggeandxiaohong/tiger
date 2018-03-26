@@ -4,12 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Setter
 @Getter
 @ToString
-public class Subject extends BaseDomain{
+public class Subject extends BaseDomain implements Serializable{
     //问题
     private String question;
     //类型
