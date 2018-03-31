@@ -8,7 +8,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
  */
 public class JobRunner {
     public static void main(String[] args) {
-        ApplicationContext beanFactory = new FileSystemXmlApplicationContext("classpath:application.xml");
+        ApplicationContext beanFactory = new FileSystemXmlApplicationContext("classpath:application-mvc.xml");
         Job job = (Job) beanFactory.getBean(args[0]);
         JobExecute execute = new JobExecute();
         execute.start(job);
