@@ -171,6 +171,7 @@ public class CoreService {
                         if(redisUtil.exists(fromUserName + ExamConst.exam_type_temp)){
                             Subject beforeSubject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_temp);
                             beforeSubject.setUserAnswer(msg);
+                            System.out.println("before subject = "+beforeSubject.toString()+",answer = "+msg);
                             redisUtil.setSubject(fromUserName + ExamConst.exam_type_answer, beforeSubject);
                         }
                         Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
