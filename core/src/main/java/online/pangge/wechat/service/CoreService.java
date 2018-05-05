@@ -160,6 +160,19 @@ public class CoreService {
                             respXml = MessageUtil.messageToXml(textMessage);
                             return respXml;
                         }
+
+                        if(redisUtil.exists(fromUserName + ExamConst.exam_type_temp)){
+                            Subject beforeSubject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_temp);
+                            beforeSubject.setUserAnswer(msg);
+                            System.out.println();
+                            System.out.println("before subject = "+beforeSubject.toString()+",answer = "+msg);
+                            System.out.println();
+                            redisUtil.setSubject(fromUserName + ExamConst.exam_type_answer, beforeSubject);
+                        }
+                        Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
+                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp,subject);
+//                        redisUtil.set(fromUserName + "subjectNumber", Integer.valueOf(redisUtil.get(fromUserName+"subjectNumber").toString())+1);
+                        String subjectStr = new Gson().toJson(subject,Subject.class);
                         if (!redisUtil.exists(fromUserName + ExamConst.exam_type_exercise)) {
                             respContent = "你的分数是";
                             List<Subject> answerSubjects = redisUtil.getSubjects(fromUserName + ExamConst.exam_type_answer);
@@ -175,19 +188,6 @@ public class CoreService {
                             redisUtil.remove(fromUserName + "subjectNumber");
                             return respXml;
                         }
-
-                        if(redisUtil.exists(fromUserName + ExamConst.exam_type_temp)){
-                            Subject beforeSubject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_temp);
-                            beforeSubject.setUserAnswer(msg);
-                            System.out.println();
-                            System.out.println("before subject = "+beforeSubject.toString()+",answer = "+msg);
-                            System.out.println();
-                            redisUtil.setSubject(fromUserName + ExamConst.exam_type_answer, beforeSubject);
-                        }
-                        Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
-                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp,subject);
-//                        redisUtil.set(fromUserName + "subjectNumber", Integer.valueOf(redisUtil.get(fromUserName+"subjectNumber").toString())+1);
-                        String subjectStr = new Gson().toJson(subject,Subject.class);
                         return getNewsMessageXML(fromUserName, toUserName, subjectStr);
                     } else if ("exam".equals(redisKey)) {
                         responseStr = "考试中。。。";
