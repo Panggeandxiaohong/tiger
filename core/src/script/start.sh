@@ -28,6 +28,7 @@ APP_MAINCLASS=$2
 PARAM=$3
 #拼凑完整的classpath参数，包括指定lib目录下所有的jar
 CLASSPATH=$APP_HOME/classes
+
 for i in "$APP_HOME"/lib/*.jar; do
    CLASSPATH="$CLASSPATH":"$i"
 done
@@ -55,7 +56,7 @@ checkpid() {
       psid=0
    fi
 }
- 
+
 ###################################
 #(函数)启动程序
 #
