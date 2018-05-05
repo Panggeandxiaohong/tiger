@@ -157,6 +157,9 @@ public class CoreService {
                         }
                         if (!redisUtil.exists(fromUserName + ExamConst.exam_type_exercise)) {
                             redisUtil.remove(fromUserName+"key");
+                            redisUtil.remove(fromUserName+ExamConst.exam_type_temp);
+                            redisUtil.remove(fromUserName+ExamConst.exam_type_answer);
+                            redisUtil.remove(fromUserName+ExamConst.exam_type_exercise);
                             redisUtil.remove(fromUserName + "subjectNumber");
                             respContent = "你的分数是";
                             List<Subject> answerSubjects = redisUtil.getSubjects(fromUserName + ExamConst.exam_type_answer);
