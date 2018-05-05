@@ -18,7 +18,7 @@ public interface IStudentService {
 
     public int updateByPrimaryKey(Student record);
 
-    public List<Student> selectByWechatName(String wechatname);
+    public Student selectByWechatName(String wechatname);
 
     public List<Student> selectByStunum(Long stunum);
 

@@ -110,7 +110,12 @@ public class CoreService {
                             respXml = MessageUtil.messageToXml(textMessage);
                             return respXml;
                         }
-                        wrongSubjectService.deleteByPrimaryKey(Long.valueOf(studentService.selectByWechatName(fromUserName).get(0).getStunum()),null);
+                        redisUtil.remove(fromUserName+"key");
+                        redisUtil.remove(fromUserName+ExamConst.exam_type_temp);
+                        redisUtil.remove(fromUserName+ExamConst.exam_type_answer);
+                        redisUtil.remove(fromUserName+ExamConst.exam_type_exercise);
+                        redisUtil.remove(fromUserName + "subjectNumber");
+                        wrongSubjectService.deleteByPrimaryKey(Long.valueOf(studentService.selectByWechatName(fromUserName).getStunum()),null);
                         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
                         redisUtil.set(fromUserName +"key", "exercise", 3600L);
                         List<Subject> allSubject = subjectService.selectAll();
@@ -142,6 +147,13 @@ public class CoreService {
                         }
                         responseStr = "统计中。。。";
                     }else if ("bind".equals(redisKey)) {
+                        Student wechatName = studentService.selectByWechatName(fromUserName);
+                        if(wechatName==null){
+                            textMessage.setContent("该微信号已经绑定学号!学号为:"+wechatName.getStunum());
+                            // 将文本消息对象转换成xml
+                            respXml = MessageUtil.messageToXml(textMessage);
+                            return respXml;
+                        }
                         String[] userNameAndPassword = msg.split("#");
                         System.out.println("stunum = "+Long.valueOf(userNameAndPassword[0]));
                         Student stu = studentService.selectByStunum(Long.valueOf(userNameAndPassword[0])).get(0);
@@ -296,9 +308,8 @@ public class CoreService {
                 wrongSubjectLink.setSubId(subject.getId());
                 wrongSubjectLink.setUserAnswer(subject.getUserAnswer());
                 wrongSubjectLink.setLastUpdateDate(new Date());
-                wrongSubjectLink.setUserId(studentService.selectByWechatName(fromusername).get(0).getStunum());
+                wrongSubjectLink.setUserId(studentService.selectByWechatName(fromusername).getStunum());
                 wrongSubjects.add(wrongSubjectLink);
-//                System.out.println("insert wrong subject with id:"+wrongSubjectLink.getSubId());
             }
         }
         if(!CollectionUtils.isEmpty(wrongSubjects)){

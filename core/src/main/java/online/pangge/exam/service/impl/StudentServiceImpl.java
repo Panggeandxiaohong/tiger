@@ -8,6 +8,7 @@ import org.junit.runners.Parameterized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -49,8 +50,9 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public List<Student> selectByWechatName(String wechatname) {
-        return studentMapper.selectByWechatName(wechatname);
+    public Student selectByWechatName(String wechatname) {
+        List<Student> stus = studentMapper.selectByWechatName(wechatname);
+        return CollectionUtils.isEmpty(stus)?null:stus.get(0);
     }
 
     @Override
