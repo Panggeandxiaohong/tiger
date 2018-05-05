@@ -171,7 +171,9 @@ public class CoreService {
                         if(redisUtil.exists(fromUserName + ExamConst.exam_type_temp)){
                             Subject beforeSubject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_temp);
                             beforeSubject.setUserAnswer(msg);
+                            System.out.println();
                             System.out.println("before subject = "+beforeSubject.toString()+",answer = "+msg);
+                            System.out.println();
                             redisUtil.setSubject(fromUserName + ExamConst.exam_type_answer, beforeSubject);
                         }
                         Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
@@ -272,7 +274,9 @@ public class CoreService {
         List<WrongSubjectLink> wrongSubjects = new ArrayList<>();
         for(int i = 0 ; i < subjects.size();i++){
             Subject subject = subjects.get(i);
+            System.out.println();
             System.out.println("correcting subject = "+subject.toString());
+            System.out.println();
             if(subject.getAnswer().equals(subject.getUserAnswer())){
                 //right
                 score +=1;
@@ -284,7 +288,7 @@ public class CoreService {
                 wrongSubjectLink.setLastUpdateDate(new Date());
                 wrongSubjectLink.setUserId(studentService.selectByWechatName(fromusername).get(0).getStunum());
                 wrongSubjects.add(wrongSubjectLink);
-                System.out.println("insert wrong subject with id:"+wrongSubjectLink.getSubId());
+//                System.out.println("insert wrong subject with id:"+wrongSubjectLink.getSubId());
             }
         }
         wrongSubjectService.insertWrongSubjectLinks(wrongSubjects);
