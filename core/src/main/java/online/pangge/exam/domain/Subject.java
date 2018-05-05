@@ -2,14 +2,12 @@ package online.pangge.exam.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Setter
 @Getter
-@ToString
 public class Subject extends BaseDomain implements Serializable{
     //问题
     private String question;
@@ -40,5 +38,10 @@ public class Subject extends BaseDomain implements Serializable{
     private String mediaType;
     public Subject(){
         super();
+    }
+    @Override
+    public String toString(){
+
+        return "question="+question+",subjectType="+subjectType.getTypeName()+",answer="+answer;
     }
 }
