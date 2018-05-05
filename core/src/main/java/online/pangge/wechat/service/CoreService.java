@@ -119,7 +119,11 @@ public class CoreService {
                             System.out.println("set subject ========="+s.toString());
                             redisUtil.setSubject(fromUserName + ExamConst.exam_type_exercise, s);
                         }
-                        responseStr = "开始练习。。。";
+                        Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
+                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp,subject);
+//                        redisUtil.set(fromUserName + "subjectNumber", Integer.valueOf(redisUtil.get(fromUserName+"subjectNumber").toString())+1);
+                        String subjectStr = new Gson().toJson(subject,Subject.class);
+                        return getNewsMessageXML(fromUserName, toUserName, subjectStr);
                     } else {
                         responseStr = "请按套路出牌";
                     }
