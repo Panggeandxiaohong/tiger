@@ -156,11 +156,6 @@ public class CoreService {
                             return respXml;
                         }
                         if (!redisUtil.exists(fromUserName + ExamConst.exam_type_exercise)) {
-                            redisUtil.remove(fromUserName+"key");
-                            redisUtil.remove(fromUserName+ExamConst.exam_type_temp);
-                            redisUtil.remove(fromUserName+ExamConst.exam_type_answer);
-                            redisUtil.remove(fromUserName+ExamConst.exam_type_exercise);
-                            redisUtil.remove(fromUserName + "subjectNumber");
                             respContent = "你的分数是";
                             List<Subject> answerSubjects = redisUtil.getSubjects(fromUserName + ExamConst.exam_type_answer);
                             int score = Correcting(answerSubjects,fromUserName);
@@ -168,6 +163,11 @@ public class CoreService {
                             textMessage.setContent(respContent+score);
                             // 将文本消息对象转换成xml
                             respXml = MessageUtil.messageToXml(textMessage);
+                            redisUtil.remove(fromUserName+"key");
+                            redisUtil.remove(fromUserName+ExamConst.exam_type_temp);
+                            redisUtil.remove(fromUserName+ExamConst.exam_type_answer);
+                            redisUtil.remove(fromUserName+ExamConst.exam_type_exercise);
+                            redisUtil.remove(fromUserName + "subjectNumber");
                             return respXml;
                         }
 
