@@ -271,8 +271,9 @@ public class CoreService {
         List<WrongSubjectLink> wrongSubjects = new ArrayList<>();
         for(int i = 0 ; i < subjects.size();i++){
             Subject subject = subjects.get(i);
+            System.out.println("correcting subject = "+subject.toString());
             if(subject.getAnswer().equals(subject.getUserAnswer())){
-                //reght
+                //right
                 score +=1;
             }else{
                 //wrong
@@ -282,7 +283,7 @@ public class CoreService {
                 wrongSubjectLink.setLastUpdateDate(new Date());
                 wrongSubjectLink.setUserId(studentService.selectByWechatName(fromusername).get(0).getStunum());
                 wrongSubjects.add(wrongSubjectLink);
-                log.info("insert wrong subject with id:"+wrongSubjectLink.getSubId());
+                System.out.println("insert wrong subject with id:"+wrongSubjectLink.getSubId());
             }
         }
         wrongSubjectService.insertWrongSubjectLinks(wrongSubjects);
