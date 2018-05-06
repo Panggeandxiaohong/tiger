@@ -172,7 +172,9 @@ public class CoreService {
 
                         examService.addAnswer(fromUserName, msg);
                         if (!redisUtil.exists(fromUserName + ExamConst.exam_type_exercise)) {
-                            return examService.endExam(fromUserName);
+                            String ret = examService.endExam(fromUserName);
+                            System.out.println(ret);
+                            return ret;
                         }
                         Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
                         redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp, subject);
