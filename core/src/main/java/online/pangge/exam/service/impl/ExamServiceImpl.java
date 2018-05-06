@@ -45,6 +45,7 @@ public class ExamServiceImpl implements IExamService {
         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
         redisUtil.remove(fromUserName + "subjectNumber");
         System.out.println("begin return score...");
+        System.out.println(returnXML("你的分数是" + score));
         return returnXML("你的分数是" + score);
     }
 
