@@ -38,11 +38,13 @@ public class ExamServiceImpl implements IExamService {
         System.out.println("begin correnting...");
         List<Subject> answerSubjects = redisUtil.getSubjects(fromUserName + ExamConst.exam_type_answer);
         int score = Correcting(answerSubjects, fromUserName);
+        System.out.println("begin clean cache...");
         redisUtil.remove(fromUserName + "key");
         redisUtil.remove(fromUserName + ExamConst.exam_type_temp);
         redisUtil.remove(fromUserName + ExamConst.exam_type_answer);
         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
         redisUtil.remove(fromUserName + "subjectNumber");
+        System.out.println("begin return score...");
         return returnXML("你的分数是" + score);
     }
 
