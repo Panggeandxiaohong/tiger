@@ -10,7 +10,6 @@ import online.pangge.exam.util.ExamConst;
 import online.pangge.exam.util.RedisUtil;
 import online.pangge.wechat.damain.message.resp.Article;
 import online.pangge.wechat.damain.message.resp.NewsMessage;
-import online.pangge.wechat.damain.message.resp.TextMessage;
 import online.pangge.wechat.util.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +44,7 @@ public class ExamServiceImpl implements IExamService {
         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
         redisUtil.remove(fromUserName + "subjectNumber");
         System.out.println("begin return score...");
-        System.out.println(returnXML("你的分数是" + score));
-        return returnXML("你的分数是" + score);
+        return "你的分数是" + score;
     }
 
     @Override
@@ -56,13 +54,6 @@ public class ExamServiceImpl implements IExamService {
             beforeSubject.setUserAnswer(answer);
             redisUtil.setSubject(fromUserName + ExamConst.exam_type_answer, beforeSubject);
         }
-    }
-
-    @Override
-    public String returnXML(String content) {
-        TextMessage textMessage = new TextMessage();
-        textMessage.setContent(content);
-        return MessageUtil.messageToXml(textMessage);
     }
 
     @Override

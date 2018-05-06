@@ -12,8 +12,6 @@ public interface IExamService {
 
     public void addAnswer(String fromUserName,String answer);
 
-    public String returnXML(String content);
-
     public String getNewsMessageXML(String fromUserName, String toUserName, String subjectString);
 
     public int Correcting(List<Subject> subjects, String fromusername);

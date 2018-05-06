@@ -143,13 +143,15 @@ public class CoreService {
                         responseStr = "退出成功。。。";
                     } else if ("count".equals(redisKey)) {
                         if (!studentService.checkIsBandStunum(fromUserName)) {
-                            return examService.returnXML("未绑定学号或者一个微信绑定多个学号！");
+                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
+                            return MessageUtil.messageToXml(textMessage);
                         }
                         responseStr = "统计中。。。";
                     } else if ("bind".equals(redisKey)) {
                         Student wechatName = studentService.selectByWechatName(fromUserName);
                         if (wechatName == null) {
-                            return examService.returnXML("该微信号已经绑定学号!学号为:" + wechatName.getStunum());
+                            textMessage.setContent("该微信号已经绑定学号!学号为:" + wechatName.getStunum());
+                            return MessageUtil.messageToXml(textMessage);
                         }
                         String[] userNameAndPassword = msg.split("#");
                         System.out.println("stunum = " + Long.valueOf(userNameAndPassword[0]));
