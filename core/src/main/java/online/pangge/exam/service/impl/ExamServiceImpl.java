@@ -35,6 +35,7 @@ public class ExamServiceImpl implements IExamService {
     private IWrongSubjectService wrongSubjectService;
     @Override
     public String endExam(String fromUserName) {
+        System.out.println("begin correnting...");
         List<Subject> answerSubjects = redisUtil.getSubjects(fromUserName + ExamConst.exam_type_answer);
         int score = Correcting(answerSubjects, fromUserName);
         redisUtil.remove(fromUserName + "key");
