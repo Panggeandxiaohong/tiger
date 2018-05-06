@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import online.pangge.exam.domain.Student;
 import online.pangge.exam.domain.Subject;
 import online.pangge.exam.domain.WrongSubjectLink;
+import online.pangge.exam.service.IExamService;
 import online.pangge.exam.service.IStudentService;
 import online.pangge.exam.service.ISubjectService;
 import online.pangge.exam.service.IWrongSubjectService;
@@ -50,6 +51,8 @@ public class CoreService {
     @Autowired
     private IStudentService studentService;
     @Autowired
+    private IExamService examService;
+    @Autowired
     private ISubjectService subjectService;
     @Autowired
     private IWrongSubjectService wrongSubjectService;
@@ -80,129 +83,101 @@ public class CoreService {
             String responseStr = null;
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-                String redisKey = (String) redisUtil.get(fromUserName +"key");
+                String redisKey = (String) redisUtil.get(fromUserName + "key");
                 if (StringUtils.isEmpty(redisKey)) {
                     if (msg.contains("自测")) {
-                        if(!studentService.checkIsBandStunum(fromUserName)){
+                        if (!studentService.checkIsBandStunum(fromUserName)) {
                             textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
                             // 将文本消息对象转换成xml
                             respXml = MessageUtil.messageToXml(textMessage);
                             return respXml;
                         }
-                        redisUtil.set(fromUserName +"key", "exam", 3600L);
+                        redisUtil.set(fromUserName + "key", "exam", 3600L);
                         responseStr = "开始自测。。。";
                     } else if (msg.contains("统计")) {
-                        if(!studentService.checkIsBandStunum(fromUserName)){
+                        if (!studentService.checkIsBandStunum(fromUserName)) {
                             textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
                             // 将文本消息对象转换成xml
                             respXml = MessageUtil.messageToXml(textMessage);
                             return respXml;
                         }
-                        redisUtil.set(fromUserName +"key", "count", 3600L);
+                        redisUtil.set(fromUserName + "key", "count", 3600L);
                         responseStr = "真正的开始统计了。。。";
-                    }else if(msg.contains("绑定")){
-                        redisUtil.set(fromUserName +"key", "bind", 3600L);
+                    } else if (msg.contains("绑定")) {
+                        redisUtil.set(fromUserName + "key", "bind", 3600L);
                         responseStr = "开始绑定，请输入学号#密码进行绑定，比如：000#000";
                     } else if (msg.contains("练习")) {
-                        if(!studentService.checkIsBandStunum(fromUserName)){
+                        if (!studentService.checkIsBandStunum(fromUserName)) {
                             textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
                             // 将文本消息对象转换成xml
                             respXml = MessageUtil.messageToXml(textMessage);
                             return respXml;
                         }
-                        redisUtil.remove(fromUserName+"key");
-                        redisUtil.remove(fromUserName+ExamConst.exam_type_temp);
-                        redisUtil.remove(fromUserName+ExamConst.exam_type_answer);
-                        redisUtil.remove(fromUserName+ExamConst.exam_type_exercise);
-                        redisUtil.remove(fromUserName + "subjectNumber");
-                        wrongSubjectService.deleteByPrimaryKey(Long.valueOf(studentService.selectByWechatName(fromUserName).getStunum()),null);
+                        redisUtil.remove(fromUserName + "key");
+                        redisUtil.remove(fromUserName + ExamConst.exam_type_temp);
+                        redisUtil.remove(fromUserName + ExamConst.exam_type_answer);
                         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
-                        redisUtil.set(fromUserName +"key", "exercise", 3600L);
+                        redisUtil.remove(fromUserName + "subjectNumber");
+                        wrongSubjectService.deleteByPrimaryKey(Long.valueOf(studentService.selectByWechatName(fromUserName).getStunum()), null);
+                        redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
+                        redisUtil.set(fromUserName + "key", "exercise", 3600L);
                         List<Subject> allSubject = subjectService.selectAll();
-                        System.out.println(allSubject.size()+"===============================");
+                        System.out.println(allSubject.size() + "===============================");
                         for (Subject s : allSubject) {
-                            System.out.println("set subject ========="+s.toString());
+                            System.out.println("set subject =========" + s.toString());
                             redisUtil.setSubject(fromUserName + ExamConst.exam_type_exercise, s);
                         }
                         Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
-                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp,subject);
+                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp, subject);
 //                        redisUtil.set(fromUserName + "subjectNumber", Integer.valueOf(redisUtil.get(fromUserName+"subjectNumber").toString())+1);
-                        String subjectStr = new Gson().toJson(subject,Subject.class);
-                        return getNewsMessageXML(fromUserName, toUserName, subjectStr);
+                        String subjectStr = new Gson().toJson(subject, Subject.class);
+                        return examService.getNewsMessageXML(fromUserName, toUserName, subjectStr);
                     } else {
                         responseStr = "请按套路出牌";
                     }
                 } else {
                     if ("退出".equals(msg)) {
-                        redisUtil.remove(fromUserName +"key");
+                        redisUtil.remove(fromUserName + "key");
                         redisUtil.remove(fromUserName + ExamConst.exam_type_exercise);
                         redisUtil.remove(fromUserName + "subjectNumber");
                         responseStr = "退出成功。。。";
                     } else if ("count".equals(redisKey)) {
-                        if(!studentService.checkIsBandStunum(fromUserName)){
-                            textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
-                            // 将文本消息对象转换成xml
-                            respXml = MessageUtil.messageToXml(textMessage);
-                            return respXml;
+                        if (!studentService.checkIsBandStunum(fromUserName)) {
+                            return examService.returnXML("未绑定学号或者一个微信绑定多个学号！");
                         }
                         responseStr = "统计中。。。";
-                    }else if ("bind".equals(redisKey)) {
+                    } else if ("bind".equals(redisKey)) {
                         Student wechatName = studentService.selectByWechatName(fromUserName);
-                        if(wechatName==null){
-                            textMessage.setContent("该微信号已经绑定学号!学号为:"+wechatName.getStunum());
-                            // 将文本消息对象转换成xml
-                            respXml = MessageUtil.messageToXml(textMessage);
-                            return respXml;
+                        if (wechatName == null) {
+                            return examService.returnXML("该微信号已经绑定学号!学号为:" + wechatName.getStunum());
                         }
                         String[] userNameAndPassword = msg.split("#");
-                        System.out.println("stunum = "+Long.valueOf(userNameAndPassword[0]));
+                        System.out.println("stunum = " + Long.valueOf(userNameAndPassword[0]));
                         Student stu = studentService.selectByStunum(Long.valueOf(userNameAndPassword[0])).get(0);
-                        if(stu.getPassword().equals(userNameAndPassword[1])){
+                        if (stu.getPassword().equals(userNameAndPassword[1])) {
                             stu.setWechatname(fromUserName);
                             studentService.updateByPrimaryKey(stu);
                             responseStr = "綁定成功。。。";
-                        }else{
+                        } else {
                             responseStr = "綁定失敗。。。";
                         }
-                        redisUtil.remove(fromUserName +"key");
-                    }  else if ("exercise".equals(redisKey)) {
-                        if(!studentService.checkIsBandStunum(fromUserName)){
+                        redisUtil.remove(fromUserName + "key");
+                    } else if ("exercise".equals(redisKey)) {
+                        if (!studentService.checkIsBandStunum(fromUserName)) {
                             textMessage.setContent("未绑定学号或者一个微信绑定多个学号！");
                             // 将文本消息对象转换成xml
                             respXml = MessageUtil.messageToXml(textMessage);
                             return respXml;
                         }
 
-                        if(redisUtil.exists(fromUserName + ExamConst.exam_type_temp)){
-                            Subject beforeSubject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_temp);
-                            beforeSubject.setUserAnswer(msg);
-                            System.out.println();
-                            System.out.println("before subject = "+beforeSubject.toString()+",answer = "+msg);
-                            System.out.println();
-                            redisUtil.setSubject(fromUserName + ExamConst.exam_type_answer, beforeSubject);
-                        }
+                        examService.addAnswer(fromUserName, msg);
                         if (!redisUtil.exists(fromUserName + ExamConst.exam_type_exercise)) {
-                            respContent = "你的分数是";
-                            List<Subject> answerSubjects = redisUtil.getSubjects(fromUserName + ExamConst.exam_type_answer);
-                            int score = Correcting(answerSubjects,fromUserName);
-                            // 设置文本消息的内容
-                            textMessage.setContent(respContent+score);
-                            // 将文本消息对象转换成xml
-                            respXml = MessageUtil.messageToXml(textMessage);
-                            redisUtil.remove(fromUserName+"key");
-                            redisUtil.remove(fromUserName+ExamConst.exam_type_temp);
-                            redisUtil.remove(fromUserName+ExamConst.exam_type_answer);
-                            redisUtil.remove(fromUserName+ExamConst.exam_type_exercise);
-                            redisUtil.remove(fromUserName + "subjectNumber");
-                            return respXml;
+                            return examService.endExam(fromUserName);
                         }
-
-
                         Subject subject = redisUtil.getSubject(fromUserName + ExamConst.exam_type_exercise);
-                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp,subject);
-//                        redisUtil.set(fromUserName + "subjectNumber", Integer.valueOf(redisUtil.get(fromUserName+"subjectNumber").toString())+1);
-                        String subjectStr = new Gson().toJson(subject,Subject.class);
-                        return getNewsMessageXML(fromUserName, toUserName, subjectStr);
+                        redisUtil.setSubject(fromUserName + ExamConst.exam_type_temp, subject);
+                        String subjectStr = new Gson().toJson(subject, Subject.class);
+                        return examService.getNewsMessageXML(fromUserName, toUserName, subjectStr);
                     } else if ("exam".equals(redisKey)) {
                         responseStr = "考试中。。。";
                     }
@@ -266,19 +241,19 @@ public class CoreService {
 
     private String getNewsMessageXML(String fromUserName, String toUserName, String subjectString) throws UnsupportedEncodingException {
         Article article = new Article();
-        Subject s = new Gson().fromJson(subjectString,Subject.class);
+        Subject s = new Gson().fromJson(subjectString, Subject.class);
         int subjectNumber = 1;
         if (!redisUtil.exists(fromUserName + "subjectNumber")) {
             redisUtil.set(fromUserName + "subjectNumber", 1);
         } else {
-            subjectNumber = Integer.valueOf(redisUtil.get(fromUserName +"subjectNumber").toString());
+            subjectNumber = Integer.valueOf(redisUtil.get(fromUserName + "subjectNumber").toString());
         }
-        article.setTitle("第"+subjectNumber+"题,"+s.getSubjectType().getTypeName()+"：");
-        redisUtil.set(fromUserName + "subjectNumber", subjectNumber+1);
+        article.setTitle("第" + subjectNumber + "题," + s.getSubjectType().getTypeName() + "：");
+        redisUtil.set(fromUserName + "subjectNumber", subjectNumber + 1);
         article.setDescription("点此进入正题。");
         article.setPicUrl("");
-        subjectString = URLEncoder.encode(subjectString,"utf-8");
-        article.setUrl("http://teaorcoffee.cn/exam.do?subjectString="+subjectString);
+        subjectString = URLEncoder.encode(subjectString, "utf-8");
+        article.setUrl("http://teaorcoffee.cn/exam.do?subjectString=" + subjectString);
         List<Article> articleList = new ArrayList<Article>();
         articleList.add(article);
         // 创建图文消息
@@ -291,18 +266,16 @@ public class CoreService {
         newsMessage.setArticles(articleList);
         return MessageUtil.messageToXml(newsMessage);
     }
-    private int Correcting(List<Subject> subjects,String fromusername){
+
+    private int Correcting(List<Subject> subjects, String fromusername) {
         int score = 0;
         List<WrongSubjectLink> wrongSubjects = new ArrayList<>();
-        for(int i = 0 ; i < subjects.size();i++){
+        for (int i = 0; i < subjects.size(); i++) {
             Subject subject = subjects.get(i);
-            System.out.println();
-            System.out.println("correcting subject = "+subject.toString());
-            System.out.println();
-            if(subject.getAnswer().equals(subject.getUserAnswer())){
+            if (subject.getAnswer().equals(subject.getUserAnswer())) {
                 //right
-                score +=1;
-            }else{
+                score += 1;
+            } else {
                 //wrong
                 WrongSubjectLink wrongSubjectLink = new WrongSubjectLink();
                 wrongSubjectLink.setSubId(subject.getId());
@@ -312,7 +285,7 @@ public class CoreService {
                 wrongSubjects.add(wrongSubjectLink);
             }
         }
-        if(!CollectionUtils.isEmpty(wrongSubjects)){
+        if (!CollectionUtils.isEmpty(wrongSubjects)) {
             wrongSubjectService.insertWrongSubjectLinks(wrongSubjects);
         }
         return score;
