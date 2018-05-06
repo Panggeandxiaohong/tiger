@@ -47,6 +47,7 @@ public class WeixinController {
         response.setCharacterEncoding("UTF-8");
         // 调用核心业务类接消息、处理消息
         String respXml = coreService.processRequest(entity);
+        System.out.println(respXml);
         // 响应消息
         PrintWriter out = response.getWriter();
         out.print(respXml);
