@@ -36,7 +36,7 @@ public class SubjectTypeServiceImpl implements ISubjectTypeService {
     @Override
     @Cacheable(value="subjectall",key= "#root.methodName")
     public SubjectType selectByPrimaryKey(Long id) {
-        return selectByPrimaryKey(id);
+        return subjectTypeDao.selectByPrimaryKey(id);
     }
 
     @Override

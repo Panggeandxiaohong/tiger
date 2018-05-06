@@ -84,7 +84,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
     select id, question, A, B, C, D, answer, subject_explain,mediaType, subject_type, addtime, adduser, score,process_status,
     classes, userAnswer, url, userId,process_status
-    from subject
+    from subject where process_status = "Active"
   </select>
     <select id="queryCount" resultType="long">
         select count(id) from subject

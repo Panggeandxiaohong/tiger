@@ -130,7 +130,7 @@ public class SubjectServiceImpl implements ISubjectService {
                     subject.setSubjectType(subjectTypeMapper.selectByPrimaryKey(Math.round((xssfRow.getCell(7).getNumericCellValue()))));
                     subject.setScore(Double.valueOf(getValue(xssfRow.getCell(8))));
                     subject.setClasses(classesMapper.selectByPrimaryKey(Math.round((xssfRow.getCell(9).getNumericCellValue()))));
-                    subject.setUrl(getValue(xssfRow.getCell(10)));
+                    subject.setUrl("http://pangge.oss-cn-shenzhen.aliyuncs.com/"+getValue(xssfRow.getCell(10)));
                     subject.setMediaType(getValue(xssfRow.getCell(11)));
                     subject.setProcessStatus(ExamConst.processStatus.Inactive.name());
                     subject.setAddtime(new Date());
