@@ -149,7 +149,7 @@ public class CoreService {
                         responseStr = "统计中。。。";
                     } else if ("bind".equals(redisKey)) {
                         Student wechatName = studentService.selectByWechatName(fromUserName);
-                        if (wechatName == null) {
+                        if (wechatName != null) {
                             textMessage.setContent("该微信号已经绑定学号!学号为:" + wechatName.getStunum());
                             return MessageUtil.messageToXml(textMessage);
                         }
