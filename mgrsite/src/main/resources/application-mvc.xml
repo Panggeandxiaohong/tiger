@@ -12,10 +12,10 @@
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <!--mapper扫描器-->
+    <!--mapper扫描器
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="online.pangge.*.mapper"/>
-    </bean>
+    </bean>-->
     <!-- 0.开启注解扫描-->
     <context:component-scan base-package="online.pangge"/>
     <!--登陆拦截器-->

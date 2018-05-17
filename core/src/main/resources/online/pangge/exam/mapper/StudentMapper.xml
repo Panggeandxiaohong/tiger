@@ -11,7 +11,6 @@
     <result column="wechatname" property="wechatname" jdbcType="VARCHAR" />
     <result column="stunum" property="stunum" jdbcType="BIGINT" />
     <result column="sex" property="sex" jdbcType="VARCHAR" />
-    <result column="admin" property="adminType"/>
     <result column="create_date" property="createTime" jdbcType="TIMESTAMP" />
     <result column="last_update_date" property="lastUpdateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -38,15 +37,15 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select id, name, classes, password, wechatname, stunum, sex,create_date,last_update_date,admin
+    select id, name, classes, password, wechatname, stunum, sex,create_date,last_update_date
     from student where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectByStunum" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select id, name, classes, password, wechatname, stunum, sex,create_date,last_update_date,admin
+    select id, name, classes, password, wechatname, stunum, sex,create_date,last_update_date
     from student where stunum = #{stunum}
   </select>
   <select id="selectByWechat" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select id, name, classes, password, wechatname, stunum, sex,create_date,last_update_date,admin
+    select id, name, classes, password, wechatname, stunum, sex,create_date,last_update_date
     from student where wechatname = #{wechatname}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
