@@ -65,6 +65,7 @@ public class TemplateEmailServiceImpl {
             System.out.println("data is ..."+model.toString());
             mailSender.send(message);
         }catch(Exception e){
+            System.out.println(e.toString());
             e.printStackTrace();
         }
         System.out.println("end send ...");
