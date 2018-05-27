@@ -16,6 +16,10 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
+        <dependency >
+            <groupId >com.sun.mail </groupId >
+            <artifactId >javax.mail </artifactId >
+        </dependency >
         <!-- json -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -37,14 +41,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
- <!--       <dependency>
-             <groupId>javax.mail</groupId>
-             <artifactId>javax.mail-api</artifactId>
-         </dependency>
-     <dependency>
-             <groupId>com.sun.mail</groupId>
-             <artifactId>javax.mail</artifactId>
-         </dependency>-->
     </dependencies>
     <url>http://maven.apache.org</url>
 
