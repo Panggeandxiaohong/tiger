@@ -16,10 +16,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
-        <dependency >
-            <groupId >com.sun.mail </groupId >
-            <artifactId >javax.mail </artifactId >
-        </dependency >
         <!-- json -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -31,7 +31,7 @@ public class EmailServiceImpl implements IEmailService {
     @Override
     public boolean sendEmailWhitSubjectCount(Map<String,Object> datas) {
         Email email = new Email();
-        email.setFrom("m13427598892@163.com");
+        email.setFrom("jimmy<m13427598892@163.com>");
         email.setTo("346264873@qq.com");
         email.setSubject("subject count!");
         System.out.println("send email ....");
