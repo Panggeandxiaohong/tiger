@@ -31,6 +31,7 @@ CLASSPATH=$APP_HOME/classes
 
 for i in "$APP_HOME"/lib/*.jar; do
    CLASSPATH="$CLASSPATH":"$i"
+   echo $i
 done
  
 #java虚拟机启动参数
