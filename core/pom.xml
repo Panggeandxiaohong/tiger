@@ -37,10 +37,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
-        <dependency >
-            <groupId >com.sun.mail </groupId >
-            <artifactId >javax.mail </artifactId >
-        </dependency >
     </dependencies>
     <url>http://maven.apache.org</url>
 
