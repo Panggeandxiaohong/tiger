@@ -111,7 +111,7 @@
             <artifactId>spring-data-redis</artifactId>
             <version>1.6.1.RELEASE</version>
         </dependency>
-        <!-- 引入javamail -->
+        <!-- 引入javamail-->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
