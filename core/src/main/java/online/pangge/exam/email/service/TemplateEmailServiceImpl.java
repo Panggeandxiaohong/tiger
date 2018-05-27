@@ -15,6 +15,7 @@ import javax.mail.internet.MimeUtility;
 import java.io.File;
 import java.util.Date;
 import java.util.Map;
+
 @Component
 public class TemplateEmailServiceImpl {
     @Autowired
@@ -22,50 +23,51 @@ public class TemplateEmailServiceImpl {
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 
-    private boolean validateEmail(Email email, String templateName){
-        if(StringUtils.isEmpty(email.getTo())||StringUtils.isEmpty(email.getFrom())){
+    private boolean validateEmail(Email email, String templateName) {
+        if (StringUtils.isEmpty(email.getTo()) || StringUtils.isEmpty(email.getFrom())) {
             return false;
         }
         return true;
     }
-    public boolean sendEmail(Email email,String templateName,Map<String,Object> model){
-        if(!validateEmail(email, templateName)){
+
+    public boolean sendEmail(Email email, String templateName, Map<String, Object> model) {
+        if (!validateEmail(email, templateName)) {
             return false;
         }
-        try{
+        try {
             MimeMessage message = mailSender.createMimeMessage();
 //            message.addHeader("Return-path","");
-            MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
             helper.setFrom(email.getFrom());
             helper.setTo(email.getTo().split(","));
-            if(!StringUtils.isEmpty(email.getCc())){
+            if (!StringUtils.isEmpty(email.getCc())) {
                 helper.setCc(email.getCc().split(","));
             }
-            if(!StringUtils.isEmpty(email.getBcc())){
+            if (!StringUtils.isEmpty(email.getBcc())) {
                 helper.setBcc(email.getBcc().split(","));
             }
             helper.setSentDate(new Date());
             helper.setSubject(email.getSubject());
             Template template = freeMarkerConfigurer.getConfiguration().getTemplate(templateName);
-            String htmlTemplate = FreeMarkerTemplateUtils.processTemplateIntoString(template,model);
-            helper.setText(htmlTemplate,true);
-            if(email.getParamMap()!=null&&!email.getParamMap().isEmpty()){
-                for(Map.Entry<String,Object> header : email.getParamMap().entrySet()){
-                    message.addHeader(header.getKey(),header.getValue().toString());
+            String htmlTemplate = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+            helper.setText(htmlTemplate, true);
+            if (email.getParamMap() != null && !email.getParamMap().isEmpty()) {
+                for (Map.Entry<String, Object> header : email.getParamMap().entrySet()) {
+                    message.addHeader(header.getKey(), header.getValue().toString());
                 }
             }
-            if(email.getAttchFileName()!=null&&email.getAttchFileName().length>0){
-                for(String fileName : email.getAttchFileName()){
+            if (email.getAttchFileName() != null && email.getAttchFileName().length > 0) {
+                for (String fileName : email.getAttchFileName()) {
                     File file = new File(fileName);
-                    helper.addAttachment(MimeUtility.encodeWord(file.getName()),file);
+                    helper.addAttachment(MimeUtility.encodeWord(file.getName()), file);
                 }
             }
             System.out.println("begin send ...");
-            System.out.println("use template..."+templateName);
-            System.out.println("data is ..."+model.toString());
+            System.out.println("use template..." + templateName);
+            System.out.println("data is ..." + model.toString());
             mailSender.send(message);
-        }catch(Exception e){
-            System.out.println(e.toString());
+        } catch (Exception e) {
+//            System.out.println(e.toString());
             e.printStackTrace();
         }
         System.out.println("end send ...");
