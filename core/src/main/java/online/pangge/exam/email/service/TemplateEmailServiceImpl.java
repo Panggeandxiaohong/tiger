@@ -1,5 +1,6 @@
 package online.pangge.exam.email.service;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import freemarker.template.Template;
 import online.pangge.exam.email.domain.Email;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +12,6 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeUtility;
 import java.io.File;
 import java.util.Date;
 import java.util.Map;
