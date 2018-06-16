@@ -75,7 +75,7 @@ public class ExamServiceImpl implements IExamService {
         } catch (UnsupportedEncodingException e) {
             log.error("encode error :" + subjectString);
         }
-        article.setUrl("http://teaorcoffee.cn/exam.do?subjectString=" + subjectString);
+        article.setUrl("http://copyandpaste.cn/exam.do?subjectString=" + subjectString);
         List<Article> articleList = new ArrayList<Article>();
         articleList.add(article);
         // 创建图文消息
