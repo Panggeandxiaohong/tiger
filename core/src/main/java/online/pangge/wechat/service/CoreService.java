@@ -3,7 +3,6 @@ package online.pangge.wechat.service;
 import com.google.gson.Gson;
 import online.pangge.exam.domain.Student;
 import online.pangge.exam.domain.Subject;
-import online.pangge.exam.domain.WrongSubjectLink;
 import online.pangge.exam.service.IExamService;
 import online.pangge.exam.service.IStudentService;
 import online.pangge.exam.service.ISubjectService;
@@ -12,8 +11,6 @@ import online.pangge.exam.util.ExamConst;
 import online.pangge.exam.util.OSSUtil;
 import online.pangge.exam.util.RedisUtil;
 import online.pangge.wechat.damain.XmlMessageEntity;
-import online.pangge.wechat.damain.message.resp.Article;
-import online.pangge.wechat.damain.message.resp.NewsMessage;
 import online.pangge.wechat.damain.message.resp.TextMessage;
 import online.pangge.wechat.util.MessageUtil;
 import org.apache.commons.lang.StringUtils;
@@ -22,12 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -242,55 +234,4 @@ public class CoreService {
         return respXml;
     }
 
-    private String getNewsMessageXML(String fromUserName, String toUserName, String subjectString) throws UnsupportedEncodingException {
-        Article article = new Article();
-        Subject s = new Gson().fromJson(subjectString, Subject.class);
-        int subjectNumber = 1;
-        if (!redisUtil.exists(fromUserName + "subjectNumber")) {
-            redisUtil.set(fromUserName + "subjectNumber", 1);
-        } else {
-            subjectNumber = Integer.valueOf(redisUtil.get(fromUserName + "subjectNumber").toString());
-        }
-        article.setTitle("第" + subjectNumber + "题," + s.getSubjectType().getTypeName() + "：");
-        redisUtil.set(fromUserName + "subjectNumber", subjectNumber + 1);
-        article.setDescription("点此进入正题。");
-        article.setPicUrl("");
-        subjectString = URLEncoder.encode(subjectString, "utf-8");
-        article.setUrl("http://copyandpaste.cn/exam.do?subjectString=" + subjectString);
-        List<Article> articleList = new ArrayList<Article>();
-        articleList.add(article);
-        // 创建图文消息
-        NewsMessage newsMessage = new NewsMessage();
-        newsMessage.setToUserName(fromUserName);
-        newsMessage.setFromUserName(toUserName);
-        newsMessage.setCreateTime(System.currentTimeMillis());
-        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-        newsMessage.setArticleCount(articleList.size());
-        newsMessage.setArticles(articleList);
-        return MessageUtil.messageToXml(newsMessage);
-    }
-
-    private int Correcting(List<Subject> subjects, String fromusername) {
-        int score = 0;
-        List<WrongSubjectLink> wrongSubjects = new ArrayList<>();
-        for (int i = 0; i < subjects.size(); i++) {
-            Subject subject = subjects.get(i);
-            if (subject.getAnswer().equals(subject.getUserAnswer())) {
-                //right
-                score += 1;
-            } else {
-                //wrong
-                WrongSubjectLink wrongSubjectLink = new WrongSubjectLink();
-                wrongSubjectLink.setSubId(subject.getId());
-                wrongSubjectLink.setUserAnswer(subject.getUserAnswer());
-                wrongSubjectLink.setLastUpdateDate(new Date());
-                wrongSubjectLink.setUserId(studentService.selectByWechatName(fromusername).getStunum());
-                wrongSubjects.add(wrongSubjectLink);
-            }
-        }
-        if (!CollectionUtils.isEmpty(wrongSubjects)) {
-            wrongSubjectService.insertWrongSubjectLinks(wrongSubjects);
-        }
-        return score;
-    }
 }
