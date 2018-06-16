@@ -256,7 +256,7 @@ public class CoreService {
         article.setDescription("点此进入正题。");
         article.setPicUrl("");
         subjectString = URLEncoder.encode(subjectString, "utf-8");
-        article.setUrl("http://teaorcoffee.cn/exam.do?subjectString=" + subjectString);
+        article.setUrl("http://copyandpaste.cn/exam.do?subjectString=" + subjectString);
         List<Article> articleList = new ArrayList<Article>();
         articleList.add(article);
         // 创建图文消息
